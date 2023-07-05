@@ -23,7 +23,8 @@ import { deletePayment } from './controllers/delete_payment.js'
 import { updateDebtor } from './controllers/update_debtors.js'
 
 import { signUserJWT, signGroupJWT } from './utils/signJWT.js'
-import { verifyUserJWT, verifyGroupJWT} from './utils/verifyJWT.js'
+import { verifyUserJWT } from './utils/verifyJWT.js'
+import { encryptGroupId, decryptedGroupId} from './utils/crypto.js'
 
 const app = express();
 const port = 3000;
@@ -46,8 +47,8 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/hopeitworks', (req, res) => {
-  res.render('create_payment');
+app.get('/hopeitworks', async (req, res) => {
+  //res.render('create_payment');
 });
 
 
@@ -187,8 +188,8 @@ app.post('/create/group',body('groupName').exists({checkFalsy:true}), async(req,
     }
     const groupId = await createGroupControl(groupName, userId);
     //const result = await createGroupMember(groupId, userId);
-    const groupToken = signGroupJWT(groupId);
-    res.cookie("jwtGroupToken", groupToken );
+    //const groupToken = signGroupJWT(groupId);
+    //res.cookie("jwtGroupToken", groupToken );
     res.status(200).json({ statusCode: 200, groupId});
     //res.status(200).json({ statusCode: 200, message: `邀請連結:/group/invitation/${groupToken}`});
   } catch(error) {
@@ -197,8 +198,8 @@ app.post('/create/group',body('groupName').exists({checkFalsy:true}), async(req,
   }
 })
 
-app.get('/group/invitation/:groupJWT',
-  param('groupJWT').isJWT().exists({checkFalsy:true}),
+app.get('/group/invitation/:groupToken',
+  param('groupToken').exists({checkFalsy:true}),
   async(req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -207,16 +208,18 @@ app.get('/group/invitation/:groupJWT',
       return; 
       //res.status(400).json( statusCode: 400, { message: result.array() });
     }
-    const groupJWT = req.params?.groupJWT;
-    if (!groupJWT) {
+    const groupToken = req.params?.groupToken;
+    if (!groupToken) {
       res.status(400).send('Invalid group JWT');
       return;
     }
-    const groupId = verifyGroupJWT(groupJWT);
+    //const groupId = verifyGroupJWT(groupJWT);
+    const groupIdDecrypt = await decryptedGroupId(groupToken);
+    const groupId = parseInt(groupIdDecrypt);
     const groupMemberArray = await groupMember(groupId);
     const userToken = req.cookies.jwtUserToken
     if (!userToken){
-      res.cookie("referer", `/group/invitation/${groupJWT}`);
+      res.cookie("referer", `/group/invitation/${groupToken}`);
       res.redirect('/signin');
       return;
     } 
@@ -240,7 +243,7 @@ app.get('/group/:groupId',
   try{
     const groupId : number = parseInt(req.params?.groupId);
     const userJWT = req.cookies.jwtUserToken;
-    const groupJWT = signGroupJWT(groupId);
+    const groupToken = await encryptGroupId(groupId);
     const payload = verifyUserJWT(userJWT);
     const userId = payload.userId;
     if (!payload){
@@ -259,7 +262,7 @@ app.get('/group/:groupId',
     if (isgroupMember) {
       const groupPayments = await printPayments(groupId);
       const groupTransactions = await sortTransaction(groupId);
-      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, invite: `/group/invitation/${groupJWT}`});
+      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, invite: `/group/invitation/${groupToken}`});
     } else {
       res.send('you are not group member');
     }

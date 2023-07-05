@@ -22,7 +22,7 @@ export function verifyUserJWT(token: string){
   }
 }
 
-export function verifyGroupJWT(token: string){
+/*export function verifyGroupJWT(token: string){
   try {
     const payload : any = jwt.verify(token, JWT_SECRET_KEY);
     const groupId = payload.groupId
@@ -31,4 +31,4 @@ export function verifyGroupJWT(token: string){
     console.error(error);
     throw error;
   }
-}
+}*/

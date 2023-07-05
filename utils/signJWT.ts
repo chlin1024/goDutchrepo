@@ -17,7 +17,7 @@ export function signUserJWT(userId: number) {
   }
 }
 
-export function signGroupJWT(groupId: number) {
+/*export function signGroupJWT(groupId: number) {
   try {
     const expiresTime = { expiresIn: '360000s'};
     const jwtGroupToken = jwt.sign({groupId}, JWT_SECRET_KEY, expiresTime)
@@ -25,7 +25,8 @@ export function signGroupJWT(groupId: number) {
   } catch (err) {
     console.error(err);
   }
-}
+}*/
+
 /*try {
   const [user] = await promisePool.query(userQuery, [userId]);
   // create a signed JWT token.
