@@ -1,17 +1,17 @@
 import express, { Router } from 'express';
-import { body, param, Result, validationResult } from 'express-validator';
+import { body, param, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
+import CryptoJS from 'crypto-js';
 dotenv.config();
 
-import { updateDebtorsByPaymentId } from './models/payment_debtors.js'
 import { getGroupName } from './models/payment_groups.js'
 import { createPayment, getPaymentDetails, updatePaymentById } from './models/payments.js'
 import { createDebtors, getDebtors } from './models/payment_debtors.js'
-import { createGroupMember, getGroupsByMemberId, getGroupMember, getGroupUsers } from './models/group_members.js'
+import { createGroupMember, getGroupMember } from './models/group_members.js'
 import { getuserEmail, getUserPassword, getuserId } from './models/users.js';
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
@@ -50,17 +50,6 @@ app.get('/', (req, res) => {
 app.get('/hopeitworks', async (req, res) => {
   //res.render('create_payment');
 });
-
-
-app.get('/signup_test', (req, res) => {
-  res.render('sign_up');
-})
-
-app.get('/text', (req, res) => {
-  const group = ["泰國行"];
-  res.render('text', {group});
-})
-
 
 app.get('/signin', async (req, res) => {
   res.render('sign_in');
@@ -113,9 +102,6 @@ app.post('/user/signin',
   try {
       const {email, password} = req.body;
       const referer = req.cookies.referer;
-      /*if (!email || !password) {
-        res.status(400).render('users', {error : "All input required!"});
-      }*/
       const existUser = await getuserEmail(email);
       if (existUser.length === 1) {
           const storedPassword = await getUserPassword(email);
@@ -175,7 +161,6 @@ app.post('/create/group',body('groupName').exists({checkFalsy:true}), async(req,
     }
   try{
     const groupName = req.body.groupName;
-    const Cookie = req.cookies;
     const userToken = req.cookies.jwtUserToken
     if (!userToken) {
       res.redirect('/signin');
@@ -204,13 +189,15 @@ app.get('/group/invitation/:groupToken',
     const result = validationResult(req);
     if (!result.isEmpty()) {
       console.log(result);
-      res.status(400).json({ statusCode: 400, result});
+      res.status(400).send({ statusCode: 400, result});
       return; 
       //res.status(400).json( statusCode: 400, { message: result.array() });
     }
     const groupToken = req.params?.groupToken;
-    if (!groupToken) {
-      res.status(400).send('Invalid group JWT');
+    const algorithm = CryptoJS.AES;
+    const isValid = groupToken.startsWith(algorithm);
+    if (!isValid) {
+      res.status(400).send('Invalid group token');
       return;
     }
     //const groupId = verifyGroupJWT(groupJWT);
@@ -268,6 +255,7 @@ app.get('/group/:groupId',
     }
   } catch (error) {
     res.status(500)
+    return;
   }
 })
 
@@ -354,9 +342,9 @@ app.post('/payment/delete',
     }
 })
 
-/*app.all('*', (req, res) => {
+app.all('*', (req, res) => {
   res.status(404).render('404');
-});*/
+});
 
 app.listen(port, ( ) => {
   console.log(`Server is listening on ${port}`);
