@@ -22,7 +22,7 @@ import { printPayments } from './controllers/payments.js'
 import { deletePayment } from './controllers/delete_payment.js'
 import { updateDebtor } from './controllers/update_debtors.js'
 
-import { signUserJWT, signGroupJWT } from './utils/signJWT.js'
+import { signUserJWT } from './utils/signJWT.js'
 import { verifyUserJWT } from './utils/verifyJWT.js'
 import { encryptGroupId, decryptedGroupId} from './utils/crypto.js'
 
@@ -354,9 +354,9 @@ app.post('/payment/delete',
     }
 })
 
-app.all('*', (req, res) => {
+/*app.all('*', (req, res) => {
   res.status(404).render('404');
-});
+});*/
 
 app.listen(port, ( ) => {
   console.log(`Server is listening on ${port}`);

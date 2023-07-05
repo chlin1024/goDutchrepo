@@ -1,8 +1,9 @@
 import { error } from "console";
 import jwt from "jsonwebtoken";
+//import * as dotenv from 'dotenv';
+//dotenv.config();
 
-const JWT_SECRET_KEY = "uygukygkuyf";
-//process.env.JWT_SECRET_KEY;
+const JWT_SECRET_KEY = process.env.ACCESS_TOKEN_SECRET;
 
 export function signUserJWT(userId: number) {
   try {
@@ -10,7 +11,7 @@ export function signUserJWT(userId: number) {
     const payload = {
       userId: userId
     }
-    const jwtUserToken = jwt.sign(payload, JWT_SECRET_KEY, expiresTime)
+    const jwtUserToken = jwt.sign(payload, JWT_SECRET_KEY as string, expiresTime)
     return jwtUserToken;
   } catch (err) {
     console.error(err);

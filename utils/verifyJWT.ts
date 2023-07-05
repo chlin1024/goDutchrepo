@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
-
-const JWT_SECRET_KEY = "uygukygkuyf";
-//process.env.JWT_SECRET_KEY;
+//import * as dotenv from 'dotenv';
+//dotenv.config();
+//const JWT_SECRET_KEY = "uygukygkuyf";
+const JWT_SECRET_KEY = process.env.ACCESS_TOKEN_SECRET;
 
 /*const DecodedSchema = Object({
   Id: number(),
@@ -11,7 +12,7 @@ const JWT_SECRET_KEY = "uygukygkuyf";
 
 export function verifyUserJWT(token: string){
   try {
-    const payload : any = jwt.verify(token, JWT_SECRET_KEY);
+    const payload : any = jwt.verify(token, JWT_SECRET_KEY as string);
     return payload;
   } catch (error: any) {
     console.error(error);
