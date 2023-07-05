@@ -1,0 +1,198 @@
+doctype html
+//
+  =========================================================
+  * Argon Dashboard 2 Tailwind - v1.0.1
+  =========================================================
+  * Product Page: https://www.creative-tim.com/product/argon-dashboard-tailwind
+  * Copyright 2022 Creative Tim (https://www.creative-tim.com)
+  * Coded by www.creative-tim.com
+  =========================================================
+  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='apple-touch-icon', sizes='76x76', href='../assets/img/apple-icon.png')
+    link(rel='icon', type='image/png', href='../assets/img/favicon.png')
+    title goDutch
+    // Fonts and icons
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700', rel='stylesheet')
+    // Font Awesome Icons
+    script(src='https://kit.fontawesome.com/42d5adcbca.js', crossorigin='anonymous')
+    // Nucleo Icons
+    link(href='../assets/css/nucleo-icons.css', rel='stylesheet')
+    link(href='../assets/css/nucleo-svg.css', rel='stylesheet')
+    // Main Styling
+    link(href='../assets/css/argon-dashboard-tailwind.css?v=1.0.1', rel='stylesheet')
+    // jQuery
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js")
+  body.m-0.font-sans.antialiased.font-normal.bg-white.text-start.text-base.leading-default.text-slate-500
+    // Navbar
+    nav.absolute.top-0.z-30.flex.flex-wrap.items-center.justify-between.w-full.px-4.py-2.mt-6.mb-4.shadow-none(class='lg:flex-nowrap lg:justify-start')
+      .container.flex.items-center.justify-between.py-0.flex-wrap-inherit
+        a.ml-4.mr-4.font-bold.text-white.text-sm.whitespace-nowrap(class='py-1.75 lg:ml-0', href='/', target='_blank')  goDutch 
+        button.px-3.py-1.ml-2.leading-none.transition-all.ease-in-out.bg-transparent.border.border-transparent.border-solid.rounded-lg.shadow-none.cursor-pointer.text-lg(navbar-trigger='', class='lg:hidden', type='button', aria-controls='navigation', aria-expanded='false', aria-label='Toggle navigation')
+          span.inline-block.mt-2.align-middle.bg-center.bg-no-repeat.bg-cover.w-6.h-6.bg-none
+            span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar1='', class='w-5.5')
+            span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar2='', class='w-5.5 mt-1.75')
+            span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar3='', class='w-5.5 mt-1.75')
+        .items-center.flex-grow.transition-all.ease.duration-350.basis-full.rounded-2xl(navbar-menu='', class='lg-max:bg-white lg-max:max-h-0 lg-max:overflow-hidden lg:flex lg:basis-auto')
+          ul.flex.flex-col.pl-0.mx-auto.mb-0.list-none(class='lg-max:py-2 lg:flex-row xl:ml-auto')
+            li
+              a.flex.items-center.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', aria-current='page', href='/personal_page')
+                i.mr-1.text-white.fa.fa-chart-pie.opacity-60(class='lg-max:text-slate-700')
+                |              Personal Page
+            //li
+              a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='../pages/profile.html')
+                i.mr-1.text-white.fa.fa-user.opacity-60(class='lg-max:text-slate-700') Profile
+            li
+              a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/signup')
+                i.mr-1.text-white.fas.fa-user-circle.opacity-60(class='lg-max:text-slate-700') Sign Up
+            li
+              a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='')
+                i.mr-1.text-white.fas.fa-key.opacity-60(class='lg-max:text-slate-700') Sign In
+          // online builder btn
+          //
+            <li class="flex items-center">
+            <a
+            class="leading-pro ease-in border-white/75 text-xs tracking-tight-rem rounded-3.5xl hover:border-white/75 hover:-translate-y-px active:hover:border-white/75 active:hover:-translate-y-px active:opacity-85 active:shadow-xs active:border-white/75 bg-white/10 hover:bg-white/10 active:hover:bg-white/10 mr-2 mb-0 inline-block cursor-pointer border border-solid py-2 px-8 text-center align-middle font-bold uppercase text-white shadow-none transition-all hover:text-white hover:opacity-75 hover:shadow-none active:scale-100 active:bg-white active:text-black active:hover:text-white active:hover:opacity-75 active:hover:shadow-none"
+            target="_blank"
+            href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053"
+            >Online Builder</a
+            >
+            </li>
+          //ul.hidden.pl-0.mb-0.list-none(class='lg:block lg:flex-row')
+            li
+              a.inline-block.px-8.py-2.mb-0.mr-1.font-bold.leading-normal.text-center.align-middle.transition-all.ease-in.bg-transparent.border-0.rounded-lg.shadow-md.cursor-pointer.text-xs.tracking-tight-rem.bg-gradient-to-tl.from-gray-400.to-gray-100.text-slate-800(href='https://www.creative-tim.com/product/argon-dashboard-tailwind', target='_blank', class='hover:-translate-y-px hover:shadow-xs active:opacity-85') Use
+    main.mt-0.transition-all.duration-200.ease-in-out
+      section.min-h-screen
+        .bg-top.relative.flex.items-start.pt-12.pb-56.m-4.overflow-hidden.bg-cover.min-h-50-screen.rounded-xl(class="bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg')]")
+          span.absolute.top-0.left-0.w-full.h-full.bg-center.bg-cover.bg-gradient-to-tl.from-zinc-800.to-zinc-700.opacity-60
+          .container.z-10
+            .flex.flex-wrap.justify-center.-mx-3
+              .w-full.max-w-full.px-3.mx-auto.mt-0.text-center.shrink-0(class='lg:flex-0 lg:w-5/12')
+                h1.mt-12.mb-2.text-white Edit Payment
+                p.text-white Make changes
+        .container
+          .flex.flex-wrap.-mx-3.-mt-48(class='md:-mt-56 lg:-mt-48')
+            .w-full.max-w-full.px-3.mx-auto.mt-0.shrink-0(class='md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12')
+              .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
+                .p-6.mb-0.text-center.bg-white.border-b-0.rounded-t-2xl
+                  h5 編輯款項
+                  input(id="paymentdiv" value=`${payment[0].creditor_id}` hidden)
+                  each debtor in debtors 
+                    input(id="debtorsdiv" name="paymentDebtor" value=`${debtor.debtor_id}` hidden)
+                .flex-auto.p-6
+                  form(role='form text-left' class="add_payment")
+                    .mb-4
+                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(type='text', id="payment_item" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='品項', aria-label='item', aria-describedby='item-addon', value=`${payment[0].item}`)
+                    .mb-4
+                        select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_creditor" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
+                          each user in users
+                            option(value=`${user.group_member_id}`)= user.name
+                    .mb-4
+                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon', value=`${payment[0].amount}`)
+                    .min-h-6.pl-7.block(class='mb-0.5')
+                      each user in users
+                        input.ease.-ml-7.duration-250.relative.float-left.mt-1.cursor-pointer.appearance-none.border.border-solid.border-slate-200.bg-white.bg-contain.bg-center.bg-no-repeat.align-top.transition-all(class="userCheckbox w-4.8 h-4.8 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100", type='checkbox', value=`${user.group_member_id}`, name="debtor")
+                        label.mb-2.ml-1.font-normal.cursor-pointer.text-sm.text-slate-700(for='flexCheckDefault')= user.name
+                        br
+                    .text-center
+                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="edit_payment" type="button" onclick="onClickEdit()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Save
+                    .text-center
+                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="delete_payment" type="button" onclick="onClickDelete()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Delete
+                    //p.mt-4.mb-0.leading-normal.text-sm
+                      | Already have an account? 
+                      a.font-bold.text-slate-700(href='/signin') Sign in
+      // -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT -------
+      //footer.py-12
+        .container
+          .flex.flex-wrap.-mx-3
+            .flex-shrink-0.w-full.max-w-full.mx-auto.mb-6.text-center(class='lg:flex-0 lg:w-8/12')
+              a.mb-2.mr-4.text-slate-400(href='javascript:;', target='_blank', class='sm:mb-0 xl:mr-12')  Company 
+              a.mb-2.mr-4.text-slate-400(href='javascript:;', target='_blank', class='sm:mb-0 xl:mr-12')  About Us 
+              a.mb-2.mr-4.text-slate-400(href='javascript:;', target='_blank', class='sm:mb-0 xl:mr-12')  Team 
+              a.mb-2.mr-4.text-slate-400(href='javascript:;', target='_blank', class='sm:mb-0 xl:mr-12')  Products 
+              a.mb-2.mr-4.text-slate-400(href='javascript:;', target='_blank', class='sm:mb-0 xl:mr-12')  Blog 
+              a.mb-2.mr-4.text-slate-400(href='javascript:;', target='_blank', class='sm:mb-0 xl:mr-12')  Pricing 
+            .flex-shrink-0.w-full.max-w-full.mx-auto.mt-2.mb-6.text-center(class='lg:flex-0 lg:w-8/12')
+              a.mr-6.text-slate-400(href='javascript:;', target='_blank')
+                span.text-lg.fab.fa-dribbble
+              a.mr-6.text-slate-400(href='javascript:;', target='_blank')
+                span.text-lg.fab.fa-twitter
+              a.mr-6.text-slate-400(href='javascript:;', target='_blank')
+                span.text-lg.fab.fa-instagram
+              a.mr-6.text-slate-400(href='javascript:;', target='_blank')
+                span.text-lg.fab.fa-pinterest
+              a.mr-6.text-slate-400(href='javascript:;', target='_blank')
+                span.text-lg.fab.fa-github
+          .flex.flex-wrap.-mx-3
+            .max-w-full.px-3.mx-auto.mt-1.text-center.flex-0(class='w-8/12')
+              p.mb-0.text-slate-400
+                | Copyright &copy;
+                script.
+                  document.write(new Date().getFullYear());
+                              Argon Dashboard 2 by Creative Tim.
+      // -------- END FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT -------
+    // plugin for scrollbar
+    script(src='../assets/js/plugins/perfect-scrollbar.min.js', async='')
+    // main script file
+    script(src='../assets/js/argon-dashboard-tailwind.js?v=1.0.1', async='')
+    script.
+      const checkboxesUsers= document.querySelectorAll('input[name="paymentDebtor"]');
+      console.log(checkboxesUsers);
+          let debtorsChecked= [];
+          checkboxesUsers.forEach((checkbox) => {
+            $(`.userCheckbox[value=${checkbox.value}]`).prop("checked", true);
+            debtorsChecked.push(checkbox.value);
+          });
+      console.log(debtorsChecked);
+      $(document).ready(() => {
+        const paymentCreditor = paymentdiv.value
+        $(`select option[value='${paymentCreditor}']`).attr("selected","selected");
+      });
+
+      function onClickDelete(){
+        $.post('/payment/delete',
+          function(data) {
+            console.log(data);
+            if (data.statusCode === 500) {
+              alert('失敗');
+              return;
+            } else if (data.statusCode === 200) {
+              alert('成功');
+              //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
+              window.location.replace(`/group/${data.groupId}`);
+            }
+          })
+      }
+      function onClickEdit(){
+        const item = document.getElementById('payment_item').value;
+        const creditor = document.getElementById('payment_creditor').value;
+        const amount = document.getElementById('payment_amount').value;
+        const checkboxes= document.querySelectorAll('input[name="debtor"]:checked');
+          let debtors= [];
+          checkboxes.forEach((checkbox) => {
+            debtors.push(checkbox.value);
+          });
+        const paymentData = {
+          item: item,
+          creditor: creditor, 
+          amount: amount,
+          debtors: debtors
+        }
+        console.log(paymentData);
+        $.post('/payment/update', paymentData,
+          function(data) {
+            console.log(data);
+            if (data.statusCode === 500) {
+              alert('失敗');
+              return;
+            } else if (data.statusCode === 200) {
+              //alert('成功更新');
+              //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
+              window.location.replace(`/group/${data.groupId}`);
+            }
+          })
+      }

@@ -1,0 +1,116 @@
+
+html
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png")
+    link(rel="icon" type="image/png" href="./assets/img/favicon.png")
+    title goDutch
+    <!--     Fonts and icons     -->
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet")
+    <!-- Font Awesome Icons -->
+    script(src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous")
+    <!-- Nucleo Icons -->
+    link(href="./assets/css/nucleo-icons.css" rel="stylesheet")
+    link(href="./assets/css/nucleo-svg.css" rel="stylesheet")
+    <!-- Popper -->
+    script(src="https://unpkg.com/@popperjs/core@2")
+    <!-- Main Styling -->
+    link(href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet")
+  body(class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500")
+    div(class="absolute w-full bg-blue-500 dark:hidden min-h-75")
+    //side nav
+    aside(class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false")
+      div(class="h-19")
+        i(class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times dark:text-white text-slate-400 xl:hidden" sidenav-close)
+        a(class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="/" target="_blank")
+          img(src="./assets/img/logo-ct.png" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo")
+          span(class="ml-1 font-semibold transition-all duration-200 ease-nav-brand") goDutch 
+      hr(class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent")
+      div(class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full")
+        ul(class="flex flex-col pl-0 mb-0")
+          li(class="mt-0.5 w-full")
+            a(class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="/personal_page")
+              div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
+                i(class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2")
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Personal Page
+          li(class="mt-0.5 w-full")
+            a(class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="/personal_page")
+              div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
+                i(class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2")
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Groups  
+          li(class="w-full mt-4")
+            h6(class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60") Account pages
+          li(class="mt-0.5 w-full")
+            a(class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="/signin")
+              div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
+                i(class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04")
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Sign In
+          li(class="mt-0.5 w-full")
+            a(class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="/signup")
+              div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
+                i(class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection")
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Sign Up
+    main(class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl")
+      nav(class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false")
+        div(class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit")
+          div(class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto")
+            div(class="flex items-center md:ml-auto md:pr-4")
+              //div(class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease")
+                span(class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all")
+                  i(class="fas fa-search")
+                input(type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here...")
+        ul(class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full")
+          li(class="flex items-center")
+            a(href="/signin" class="block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand")
+              i(class="fa fa-user sm:mr-1")
+              span(class="hidden sm:inline") Sign In
+          li(class="flex items-center pl-4 xl:hidden")
+            a(href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger)
+              div(class="w-4.5 overflow-hidden")
+                i(class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all")
+                i(class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all")
+                i(class="ease relative block h-0.5 rounded-sm bg-white transition-all")
+          li(class="flex items-center px-4")
+            a(href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand")
+              i(fixed-plugin-button-nav class="cursor-pointer fa fa-cog")
+              <!-- fixed-plugin-button-nav  -->
+      div(class="w-full px-6 py-6 mx-auto")
+        div(class="flex flex-wrap -mx-3")
+          div(class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-6 xl:w-1/4")
+                div(class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
+                  div(class="flex-auto p-4")
+                    div(class="flex flex-row -mx-3")
+                      div(class="flex-none w-2/3 max-w-full px-3")
+                        a(href=`/create/group`)
+                          div
+                            p(class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60") 群組
+                            h5(class="mb-2 font-bold dark:text-white") 新增群組
+                            p(class="mb-0 dark:text-white dark:opacity-60")
+                              span(class="text-sm font-bold leading-normal text-emerald-500")
+                      div(class="px-3 text-right basis-1/3")
+                        div(class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500")
+                          i(class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white")
+        div(class="flex flex-wrap -mx-3")
+          each group in groups
+        
+              div(class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-6 xl:w-1/4")
+                div(class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
+                  div(class="flex-auto p-4")
+                    div(class="flex flex-row -mx-3")
+                      div(class="flex-none w-2/3 max-w-full px-3")
+                        a(href=`/group/${group.groupId}`)
+                          div
+                            p(class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60") 群組
+                            h5(class="mb-2 font-bold dark:text-white")= group.groupName
+                            p(class="mb-0 dark:text-white dark:opacity-60")
+                              span(class="text-sm font-bold leading-normal text-emerald-500")
+                      div(class="px-3 text-right basis-1/3")
+                        div(class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500")
+                          i(class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white")
+      <!-- plugin for scrollbar  -->
+    script(src="../assets/js/plugins/perfect-scrollbar.min.js" async)
+      <!-- main script file  -->
+    script(src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1" async)
+      <!-- plugin for charts  -->
+    script(src="./assets/js/plugins/chartjs.min.js" async)
