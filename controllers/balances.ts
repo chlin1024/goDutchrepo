@@ -16,7 +16,6 @@ export function computeBalances(debts: { debtor: any; creditor: any; amount: num
       balances[debtor] -= amount;
       balances[creditor] += amount;
   })
-  console.log(balances);
   return balances;
 }
 

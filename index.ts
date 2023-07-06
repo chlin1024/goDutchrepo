@@ -336,9 +336,11 @@ app.post('/payment/delete',
 })
 
 app.get('/settlement/create', async (req, res) => {
+  const {debtor, creditor, amount} = req.query;
+  const transactionData = { debtor, creditor, amount}
   const groupId = req.cookies.groupId;
   const groupUsers = await getGroupMember(groupId);
-  res.render('create_settlement', {users: groupUsers});
+  res.render('create_settlement', {users: groupUsers, transactionData});
 });
 
 app.post('/settlement/create', body('amount').isInt({min:1, max: 10000000}).exists(), async (req, res) => {

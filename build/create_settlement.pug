@@ -80,17 +80,19 @@ html(lang='en')
               .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
                 .p-6.mb-0.text-center.bg-white.border-b-0.rounded-t-2xl
                   h5 新增還款
+                  input(id="debtorIddiv" value=`${transactionData.debtor}` hidden)
+                  input(id="creditorIddiv" value=`${transactionData.creditor}` hidden)
                 .flex-auto.p-6
                   form(role='form text-left' class="add_settlement")
                     //.mb-4
                       input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(type='text', id="payment_item" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='品項', aria-label='item', aria-describedby='item-addon')
-                    .mb-4
+                    .mb-4(class="payer")
                       select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_payer" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
                         each user in users
                           option(value=`${user.group_member_id}`)= user.name
                     .mb-4
-                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon')
-                    .mb-4
+                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon', value=`${transactionData.amount}`)
+                    .mb-4(class="receiver")
                       select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_receiver" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
                         each user in users
                           option(value=`${user.group_member_id}`)= user.name
@@ -134,6 +136,12 @@ html(lang='en')
     // main script file
     script(src='../assets/js/argon-dashboard-tailwind.js?v=1.0.1', async='')
     script.
+      $(document).ready(() => {
+        const debtorId = debtorIddiv.value;
+        const creditorId = creditorIddiv.value;
+        $(`div.payer select option[value='${debtorId}']`).attr("selected","selected");
+        $(`div.receiver select option[value='${creditorId}']`).attr("selected","selected");
+      });
       function onClick(){
         const payer = document.getElementById('settlement_payer').value;
         const amount = document.getElementById('settlement_amount').value;

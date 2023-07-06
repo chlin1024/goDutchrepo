@@ -157,16 +157,17 @@ html
                             div
                               img(src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user1")
                             div(class="flex flex-col justify-center")
-                              h6(class="mb-0 text-sm leading-normal dark:text-white")=payment.creditorName
+                              h6(class="mb-0 text-base leading-normal dark:text-white")=payment.creditorName
                               p(class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400")
-                        td(class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
-                          span(class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white")=payment.item
+                        td(class="p-2 text-base leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
+                          span(class="text-base font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400")=payment.item
                         td(class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
-                          span(class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400")=payment.amount
+                          span(class="text-base font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400")=payment.amount
                         //td(class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
                           span(class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400") 06/30
                         td(class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
-                          a(href=`/payment/${payment.paymentId}` class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400") Edit
+                          a(href=`/payment/${payment.paymentId}` class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white") 編輯
+                          //a(href=`/payment/${payment.paymentId}` class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400") Edit
         div(class="flex flex-wrap -mx-3")
           div(class="flex-none w-full max-w-full px-6")
             div(class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
@@ -190,17 +191,19 @@ html
                             div
                               img(src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user1")
                             div(class="flex flex-col justify-center")
-                              h6(class="mb-0 text-sm leading-normal dark:text-white")=transaction.debtor
+                              h6(id="transaction_debtor" class="mb-0 text-base leading-normal dark:text-white")=transaction.debtor
                               p(class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400")
                         td(class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
-                          span(class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white")=transaction.creditor
+                          span(id="transaction_creditor" class="text-base font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400")=transaction.creditor
+                          //span(id="transaction_creditor" class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white")=transaction.creditor
                         td(class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
-                          span(class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400")=transaction.amount
+                          span(id="transaction_amount" class="text-base font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400")=transaction.amount
                         //td(class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
                           span(class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400") 06/30
                         td(class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent")
-                          a(href=`/settlement/create` class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400") 還款
-    <!-- plugin for scrollbar  -->
+                          //a(href=`/settlement/create?debtor=${transaction.debtorId}&creditor=${transaction.creditorId}&amount=${transaction.amount}` class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400") 還款
+                          a(href=`/settlement/create?debtor=${transaction.debtorId}&creditor=${transaction.creditorId}&amount=${transaction.amount}` class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white") 還款
+    <!-- plugin for scrollbar  type="button" onclick="settleUp()" -->
     script(src="../assets/js/plugins/perfect-scrollbar.min.js", async='')
       <!-- main script file  -->
     script(src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1", async='')
@@ -217,7 +220,28 @@ html
           document.querySelector('#response_data').innerHTML = JSON.stringify("成功複製連結", null, 4);
           //alert("成功複製連結");
         });
-      }  
+      }
+      function settleUp() {
+        const debtor = document.getElementById('transaction_debtor').innerHTML;
+        const creditor = document.getElementById('transaction_creditor').innerHTML;
+        const amount = document.getElementById('transaction_amount').innerHTML;
+        const transactionData = {
+          debtor: debtor, 
+          creditor: creditor,
+          amount: amount
+        }
+        $.post('/settlement', transactionData,
+          function(data) {
+            if (data.statusCode === 500) {
+              alert('失敗');
+              return;
+            } else if (data.statusCode === 200) {
+              //alert('成功');
+              //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
+              //window.location.replace('/settlement/create');
+            }
+          })
+      }
 
       
 

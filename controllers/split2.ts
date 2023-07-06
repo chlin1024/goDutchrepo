@@ -12,9 +12,9 @@ export async function sortTransaction(groupId: number) {
   }));
     const cleanDebtRecord = debtsRecords.flat();
     const balancesRecord = computeBalances(cleanDebtRecord);
-    console.log('split2中balancesRecord', balancesRecord);
+    //console.log('split2中balancesRecord', balancesRecord);
     const settledBalances = await computeSettlement(balancesRecord, groupId); 
-    console.log('split2中settledBalances', settledBalances);
+    //console.log('split2中settledBalances', settledBalances);
     const creditors : [string, number][]= creditorGroup(balancesRecord);
     const debtors : [string, number][]= debtorGroup(balancesRecord);
     const groupTransactions = await transactions(debtors, creditors);
@@ -48,12 +48,16 @@ async function transactions(debtors : [string, number][] , creditors: [string, n
       const [creditorName] = await getUserName(creditorId);
       const transaction1 = {
         debtor: debtorName.name,
+        debtorId: debtorId,
         creditor: creditorName.name,
+        creditorId: creditorId,
         amount: Math.abs(creditorValue)
       }
       const transaction2 = {
         debtor: debtorName.name,
+        debtorId: debtorId,
         creditor: creditorName.name,
+        creditorId: creditorId,
         amount: Math.abs(debtorValue)
       }
       if (amountLeft < 0) {
