@@ -1,8 +1,7 @@
-//import {getUserName} from '../models/getUserName.js';
 import { getUserName } from '../models/users.js';
 import { getPaymentIds } from '../models/payments.js';
 import { debts } from './debts.js';
-import computeBalances from './balances.js';
+import { computeBalances, computeSettlement } from './balances.js';
 
 
 export async function sortTransaction(groupId: number) {
@@ -13,11 +12,13 @@ export async function sortTransaction(groupId: number) {
   }));
     const cleanDebtRecord = debtsRecords.flat();
     const balancesRecord = computeBalances(cleanDebtRecord);
+    console.log('split2中balancesRecord', balancesRecord);
+    const settledBalances = await computeSettlement(balancesRecord, groupId); 
+    console.log('split2中settledBalances', settledBalances);
     const creditors : [string, number][]= creditorGroup(balancesRecord);
     const debtors : [string, number][]= debtorGroup(balancesRecord);
     const groupTransactions = await transactions(debtors, creditors);
     return groupTransactions;
-    //res.render('group_data', {users: groupUsers, transcations: groupTransactions, payments: groupPayments});
 }
 
 function debtorGroup(balances: { [s: string]: number; } ) {
@@ -70,13 +71,3 @@ async function transactions(debtors : [string, number][] , creditors: [string, n
 
     }
 }
-
-
-
-
-/*export {
-  debtorGroup,
-  creditorGroup,
-  transactions
-}*/
-

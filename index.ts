@@ -327,7 +327,6 @@ app.post('/payment/delete',
     try{
       const paymentId = req.cookies.paymentId;
       const groupId = req.cookies.groupId;
-      console.log(paymentId);
       const result = await deletePayment(paymentId);
       res.status(200).json({ statusCode: 200, groupId });
     } catch (error) {
@@ -351,9 +350,7 @@ app.post('/settlement/create', body('amount').isInt({min:1, max: 10000000}).exis
   try{
     const { payer, amount, receiver } = req.body;
     const groupId = req.cookies.groupId;
-    console.log(amount, payer, groupId, receiver);
     const settlementId = await createSettlement(amount, payer, groupId, receiver);
-    console.log(settlementId);
     res.status(200).json({ statusCode: 200, groupId })
   } catch (error){
     console.error(error);

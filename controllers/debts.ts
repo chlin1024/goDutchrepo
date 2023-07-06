@@ -1,7 +1,3 @@
-//import getDebtors from '../models/getDebtors.js'
-//import countDebtors from '../models/countDebtors.js'
-//import getPaymentIds from '../models/getPaymentIds.js'
-//import getPaymentDetails from '../models/getPaymentDetails.js'
 import { getDebtors, countDebtors} from '../models/payment_debtors.js'
 import { getPaymentIds, getPaymentDetails }from '../models/payments.js'
 
