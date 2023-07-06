@@ -75,7 +75,7 @@ html(lang='en')
                         each error in errors
                           p=`${error.path}: ${error.msg}`
                   .flex-auto.p-6
-                    form(role='form' class="sign_in_form" action="/user/user/signin", method="post")
+                    form(role='form' class="sign_in_form" action="/user/signin", method="post")
                       .mb-4
                         input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.p-3.font-normal.text-gray-700.outline-none.transition-all(type='email',id="email", name="email" placeholder='Email', class='focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none')
                       .mb-4
