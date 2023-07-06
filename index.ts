@@ -52,11 +52,11 @@ app.get('/wip', async (req, res) => {
   res.render('create_settlement', {users: groupUsers});
 });
 
-app.get('/signin', async (req, res) => {
+app.get('/user/signin', async (req, res) => {
   res.render('sign_in');
 })
 
-app.get('/signup', async (req, res) => {
+app.get('/user/signup', async (req, res) => {
   res.render('sign_up');
 })
 
@@ -136,13 +136,13 @@ app.get('/personal_page', async(req, res) => {
       const payload = verifyUserJWT(userToken);
       const userId = payload.userId;
       if (!payload){
-        res.redirect('/signin');
+        res.redirect('/user/signin');
         return;
       }
       const groups = await getGroupData(userId)
       res.render('personal_page_new', {groups : groups});
       } else {
-      res.redirect('/signin');
+      res.redirect('/user/signin');
     }
   } catch (error) {
     res.status(500);
@@ -164,12 +164,12 @@ app.post('/group/create',body('groupName').exists({checkFalsy:true}), async(req,
     const groupName = req.body.groupName;
     const userToken = req.cookies.jwtUserToken
     if (!userToken) {
-      res.redirect('/signin');
+      res.redirect('/user/signin');
     }
     const payload = verifyUserJWT(userToken);
     const userId = payload.userId;
     if (!payload){
-      res.redirect('/signin');
+      res.redirect('/user/signin');
       return;
     }
     const groupId = await createGroupControl(groupName, userId);
@@ -208,13 +208,13 @@ app.get('/group/invitation/:groupToken',
     const userToken = req.cookies.jwtUserToken
     if (!userToken){
       res.cookie("referer", `/group/invitation/${groupToken}`);
-      res.redirect('/signin');
+      res.redirect('/user/signin');
       return;
     } 
     const payload = verifyUserJWT(userToken);
     const userId = payload.userId;
     if (!payload){
-      res.redirect('/signin');
+      res.redirect('/user/signin');
       return;
     }
     const isgroupMember = groupMemberArray.includes(userId)
@@ -235,7 +235,7 @@ app.get('/group/:groupId',
     const payload = verifyUserJWT(userJWT);
     const userId = payload.userId;
     if (!payload){
-      res.redirect('/signin');
+      res.redirect('/user/signin');
       return;
     }
     if (!groupId) {

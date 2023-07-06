@@ -72,36 +72,30 @@ html(lang='en')
           .container.z-10
             .flex.flex-wrap.justify-center.-mx-3
               .w-full.max-w-full.px-3.mx-auto.mt-0.text-center.shrink-0(class='lg:flex-0 lg:w-5/12')
-                h1.mt-12.mb-2.text-white Edit Payment
-                p.text-white Make changes
+                h1.mt-12.mb-2.text-white Create a new payment
+                p.text-white What have you paid for
         .container
           .flex.flex-wrap.-mx-3.-mt-48(class='md:-mt-56 lg:-mt-48')
             .w-full.max-w-full.px-3.mx-auto.mt-0.shrink-0(class='md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12')
               .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
                 .p-6.mb-0.text-center.bg-white.border-b-0.rounded-t-2xl
-                  h5 編輯款項
-                  input(id="paymentdiv" value=`${payment[0].creditor_id}` hidden)
-                  each debtor in debtors 
-                    input(id="debtorsdiv" name="paymentDebtor" value=`${debtor.debtor_id}` hidden)
+                  h5 新增款項
                 .flex-auto.p-6
                   form(role='form text-left' class="add_payment")
                     .mb-4
-                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(type='text', id="payment_item" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='品項', aria-label='item', aria-describedby='item-addon', value=`${payment[0].item}`)
+                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(type='text', id="payment_item" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='品項', aria-label='item', aria-describedby='item-addon')
                     .mb-4
                         select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_creditor" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
                           each user in users
                             option(value=`${user.group_member_id}`)= user.name
                     .mb-4
-                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon', value=`${payment[0].amount}`)
+                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon')
                     .min-h-6.pl-7.block(class='mb-0.5')
-                      each user in users
-                        input.ease.-ml-7.duration-250.relative.float-left.mt-1.cursor-pointer.appearance-none.border.border-solid.border-slate-200.bg-white.bg-contain.bg-center.bg-no-repeat.align-top.transition-all(class="userCheckbox w-4.8 h-4.8 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100", type='checkbox', value=`${user.group_member_id}`, name="debtor")
-                        label.mb-2.ml-1.font-normal.cursor-pointer.text-sm.text-slate-700(for='flexCheckDefault')= user.name
-                        br
+                      select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_creditor" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
+                          each user in users
+                            option(value=`${user.group_member_id}`)= user.name
                     .text-center
-                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="edit_payment" type="button" onclick="onClickEdit()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Save
-                    .text-center
-                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="delete_payment" type="button" onclick="onClickDelete()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Delete
+                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="add_payment" type="button" onclick="onClick()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Save
                     //p.mt-4.mb-0.leading-normal.text-sm
                       | Already have an account? 
                       a.font-bold.text-slate-700(href='/user/signin') Sign in
@@ -140,34 +134,7 @@ html(lang='en')
     // main script file
     script(src='../assets/js/argon-dashboard-tailwind.js?v=1.0.1', async='')
     script.
-      const checkboxesUsers= document.querySelectorAll('input[name="paymentDebtor"]');
-      console.log(checkboxesUsers);
-          let debtorsChecked= [];
-          checkboxesUsers.forEach((checkbox) => {
-            $(`.userCheckbox[value=${checkbox.value}]`).prop("checked", true);
-            debtorsChecked.push(checkbox.value);
-          });
-      console.log(debtorsChecked);
-      $(document).ready(() => {
-        const paymentCreditor = paymentdiv.value
-        $(`select option[value='${paymentCreditor}']`).attr("selected","selected");
-      });
-
-      function onClickDelete(){
-        $.post('/payment/delete',
-          function(data) {
-            console.log(data);
-            if (data.statusCode === 500) {
-              alert('失敗');
-              return;
-            } else if (data.statusCode === 200) {
-              alert('成功');
-              //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
-              window.location.replace(`/group/${data.groupId}`);
-            }
-          })
-      }
-      function onClickEdit(){
+      function onClick(){
         const item = document.getElementById('payment_item').value;
         const creditor = document.getElementById('payment_creditor').value;
         const amount = document.getElementById('payment_amount').value;
@@ -182,17 +149,16 @@ html(lang='en')
           amount: amount,
           debtors: debtors
         }
-        console.log(paymentData);
-        $.post('/payment/update', paymentData,
+        $.post('/payment/create', paymentData,
           function(data) {
-            console.log(data);
             if (data.statusCode === 500) {
               alert('失敗');
               return;
             } else if (data.statusCode === 200) {
-              //alert('成功更新');
+              //alert('成功');
               //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
               window.location.replace(`/group/${data.groupId}`);
             }
           })
+        //location.reload('/payment');
       }
