@@ -72,30 +72,30 @@ html(lang='en')
           .container.z-10
             .flex.flex-wrap.justify-center.-mx-3
               .w-full.max-w-full.px-3.mx-auto.mt-0.text-center.shrink-0(class='lg:flex-0 lg:w-5/12')
-                h1.mt-12.mb-2.text-white Create a new payment
-                p.text-white What have you paid for
+                h1.mt-12.mb-2.text-white Settlement
+                p.text-white Ready to settle up?
         .container
           .flex.flex-wrap.-mx-3.-mt-48(class='md:-mt-56 lg:-mt-48')
             .w-full.max-w-full.px-3.mx-auto.mt-0.shrink-0(class='md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12')
               .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
                 .p-6.mb-0.text-center.bg-white.border-b-0.rounded-t-2xl
-                  h5 新增款項
+                  h5 新增還款
                 .flex-auto.p-6
-                  form(role='form text-left' class="add_payment")
-                    .mb-4
+                  form(role='form text-left' class="add_settlement")
+                    //.mb-4
                       input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(type='text', id="payment_item" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='品項', aria-label='item', aria-describedby='item-addon')
                     .mb-4
-                        select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_creditor" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
-                          each user in users
-                            option(value=`${user.group_member_id}`)= user.name
+                      select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_payer" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
+                        each user in users
+                          option(value=`${user.group_member_id}`)= user.name
                     .mb-4
-                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon')
-                    .min-h-6.pl-7.block(class='mb-0.5')
-                      select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="payment_creditor" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
-                          each user in users
-                            option(value=`${user.group_member_id}`)= user.name
+                      input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_amount" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='金額', aria-label='Amount', aria-describedby='amount-addon')
+                    .mb-4
+                      select.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(id="settlement_receiver" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='付款人', aria-label='creditor', aria-describedby='creditor-addon')
+                        each user in users
+                          option(value=`${user.group_member_id}`)= user.name
                     .text-center
-                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="add_payment" type="button" onclick="onClick()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Save
+                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="add_settlement" type="button" onclick="onClick()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') Save
                     //p.mt-4.mb-0.leading-normal.text-sm
                       | Already have an account? 
                       a.font-bold.text-slate-700(href='/user/signin') Sign in
@@ -135,21 +135,15 @@ html(lang='en')
     script(src='../assets/js/argon-dashboard-tailwind.js?v=1.0.1', async='')
     script.
       function onClick(){
-        const item = document.getElementById('payment_item').value;
-        const creditor = document.getElementById('payment_creditor').value;
-        const amount = document.getElementById('payment_amount').value;
-        const checkboxes= document.querySelectorAll('input[name="debtor"]:checked');
-          let debtors= [];
-          checkboxes.forEach((checkbox) => {
-            debtors.push(checkbox.value);
-          });
-        const paymentData = {
-          item: item,
-          creditor: creditor, 
+        const payer = document.getElementById('settlement_payer').value;
+        const amount = document.getElementById('settlement_amount').value;
+        const receiver = document.getElementById('settlement_receiver').value;
+        const settlementData = {
+          payer: payer, 
           amount: amount,
-          debtors: debtors
+          receiver: receiver
         }
-        $.post('/payment/create', paymentData,
+        $.post('/settlement/create', settlementData,
           function(data) {
             if (data.statusCode === 500) {
               alert('失敗');

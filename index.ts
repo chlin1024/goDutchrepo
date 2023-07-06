@@ -13,6 +13,7 @@ import { getPaymentDetails, updatePaymentById } from './models/payments.js'
 import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
 import { getuserEmail, getUserPassword, getuserId } from './models/users.js';
+import { createSettlement, getGroupSettlements } from './models/settlements.js'
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
 import { sortTransaction } from './controllers/split2.js'
@@ -47,9 +48,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/wip', async (req, res) => {
-  const groupId = 31;
-  const groupUsers = await getGroupMember(groupId);
-  res.render('create_settlement', {users: groupUsers});
+  const groupId = 32;
+  const groupSettlements = await getGroupSettlements(groupId);
+  res.json({groupSettlements});
 });
 
 app.get('/user/signin', async (req, res) => {
@@ -333,6 +334,31 @@ app.post('/payment/delete',
       console.error(error);
       res.status(500).json({ statusCode: 500 });
     }
+})
+
+app.get('/settlement/create', async (req, res) => {
+  const groupId = req.cookies.groupId;
+  const groupUsers = await getGroupMember(groupId);
+  res.render('create_settlement', {users: groupUsers});
+});
+
+app.post('/settlement/create', body('amount').isInt({min:1, max: 10000000}).exists(), async (req, res) => {
+  const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log(result);
+      return res.status(400).render('create_group', { errors: result.array() });
+    }
+  try{
+    const { payer, amount, receiver } = req.body;
+    const groupId = req.cookies.groupId;
+    console.log(amount, payer, groupId, receiver);
+    const settlementId = await createSettlement(amount, payer, groupId, receiver);
+    console.log(settlementId);
+    res.status(200).json({ statusCode: 200, groupId })
+  } catch (error){
+    console.error(error);
+  }
+  
 })
 
 app.all('*', (req, res) => {

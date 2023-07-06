@@ -1,6 +1,5 @@
 import CryptoJS from 'crypto-js';
 
-
 const secretPhrase = 'sdfdfdasei90302fj';
 
 export async function encryptGroupId(groupId: number) {
