@@ -132,7 +132,7 @@ html(lang='en')
         const groupData = {
           groupName: groupName 
         }
-        $.post('/create/group', groupData, function(data){
+        $.post('/group/create', groupData, function(data){
           if (data.statusCode === 400) {
               document.querySelector('#response_data').innerHTML = JSON.stringify(data.result, null, 4);
               return;

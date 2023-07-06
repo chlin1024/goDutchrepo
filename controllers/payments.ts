@@ -1,5 +1,7 @@
 import { getGroupPayments } from '../models/payments.js'
 import { getUserName } from '../models/users.js';
+import { deletePaymentById } from '../models/payments.js'
+import { deleteDebtorsByPaymentId } from '../models/payment_debtors.js';
 
 export async function printPayments(groupId: number) {
   const results = [];
@@ -18,4 +20,14 @@ export async function printPayments(groupId: number) {
     results.push(paymentFormat);
   }
   return results;
+}
+
+export async function deletePayment(paymentId: number){
+  const deleteDebtors = await deleteDebtorsByPaymentId(paymentId);
+  const deletePayment = await deletePaymentById(paymentId);
+  return;
+}
+
+export async function createPaymentcontroll(){
+  
 }

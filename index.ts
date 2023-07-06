@@ -9,8 +9,8 @@ import CryptoJS from 'crypto-js';
 dotenv.config();
 
 import { getGroupName } from './models/payment_groups.js'
-import { createPayment, getPaymentDetails, updatePaymentById } from './models/payments.js'
-import { createDebtors, getDebtors } from './models/payment_debtors.js'
+import { getPaymentDetails, updatePaymentById } from './models/payments.js'
+import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
 import { getuserEmail, getUserPassword, getuserId } from './models/users.js';
 
@@ -18,8 +18,7 @@ import { createGroupControl, getGroupData } from './controllers/groups.js';
 import { sortTransaction } from './controllers/split2.js'
 import { groupMember } from './controllers/group_members.js';
 import { signUp } from './controllers/signup.js'
-import { printPayments } from './controllers/payments.js'
-import { deletePayment } from './controllers/delete_payment.js'
+import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js'
 import { updateDebtor } from './controllers/update_debtors.js'
 
 import { signUserJWT } from './utils/signJWT.js'
@@ -47,8 +46,10 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/hopeitworks', async (req, res) => {
-  //res.render('create_payment');
+app.get('/wip', async (req, res) => {
+  const groupId = 31;
+  const groupUsers = await getGroupMember(groupId);
+  res.render('create_settlement', {users: groupUsers});
 });
 
 app.get('/signin', async (req, res) => {
@@ -148,11 +149,11 @@ app.get('/personal_page', async(req, res) => {
   }
 })
 
-app.get ('/create/group', async(req, res) =>{
+app.get ('/group/create', async(req, res) =>{
   res.render('create_group_new');
 } )
 
-app.post('/create/group',body('groupName').exists({checkFalsy:true}), async(req, res) => {
+app.post('/group/create',body('groupName').exists({checkFalsy:true}), async(req, res) => {
   const result = validationResult(req);
     if (!result.isEmpty()) {
       res.status(400).json({ statusCode: 400, result});
@@ -276,12 +277,9 @@ app.post('/payment/create',
     }
     try{
       const {item, creditor, amount, debtors} = req.body;
-      console.log("分帳人", debtors);
       const numberOfDebtors = debtors.length
       const groupId = req.cookies.groupId;
-      const creditorId = creditor;
-      const insertPaymentId = await createPayment(item, amount, creditorId, groupId, numberOfDebtors)
-      const insertPaymendDebtorId = await debtors.map((debtor : any) => createDebtors(insertPaymentId, debtor));
+      await createPaymentcontrol(item, amount, creditor, groupId, numberOfDebtors, debtors);
       res.status(200).json({ statusCode: 200, groupId });
     } catch (error) {
       res.status(500).json({ statusCode: 500 });
@@ -290,12 +288,8 @@ app.post('/payment/create',
 
 app.get('/payment/:paymentId', async (req, res) => {
   const paymentId : number = parseInt(req.params?.paymentId);
-  //get paymentdata with paymentId : 用getPaymentDetails 需要修改query item 檢查其他會不會影響
   const paymentData = await getPaymentDetails(paymentId);
-  //get debtors with paymentId ：用getDebtors
-
   const debtors = await getDebtors(paymentId);
-  
   const groupId = req.cookies.groupId;
   const groupUsers = await getGroupMember(groupId);
   res.cookie("paymentId" , paymentId);
@@ -314,13 +308,12 @@ app.post('/payment/update',
     try{
       const {item, creditor, amount, debtors} = req.body;
       const paymentId = parseInt(req.cookies.paymentId);
-      console.log("更新分帳人", debtors);
+      //console.log("更新分帳人", debtors);
       const numberOfDebtors = debtors.length
       const groupId = req.cookies.groupId;
       const creditorId = creditor;
       const updatePaymentResult = await updatePaymentById(item, amount, creditorId, numberOfDebtors, paymentId)
       const updateDebtors = await updateDebtor(debtors, paymentId);
-      //const updatePaymentDebtorsResult = await debtors.map((debtor : any) => updateDebtorsByPaymentId(paymentId, debtor));
       res.status(200).json({ statusCode: 200, groupId });
     } catch (error) {
       console.error(error);
