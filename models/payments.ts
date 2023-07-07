@@ -58,3 +58,11 @@ export async function updatePayment(debtorId:number, paymentId: number) {
      [debtorId, paymentId]);
   return result;
 }
+
+export async function getPersonalPayments(groupId: number, userId: number) {
+  const [personalPayments] : any = await promisePool.query(
+    `SELECT id, amount, item FROM payments 
+     WHERE group_id = ? AND creditor_id = ?`, 
+     [groupId, userId]);
+  return personalPayments;
+}

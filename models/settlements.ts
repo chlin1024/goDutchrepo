@@ -17,3 +17,11 @@ export async function getGroupSettlements(groupId: number) {
      [groupId]);
   return groupSettlements;
 }
+
+export async function getPersonalsettlements(groupId: number, userId: number) {
+  const [personalsettlements] : any = await promisePool.query(
+    `SELECT id, payer_id, repay_at, amount FROM settlements 
+     WHERE group_id = ? AND receiver_id = ?`, 
+     [groupId, userId]);
+  return personalsettlements;
+}
