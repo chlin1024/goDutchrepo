@@ -10,7 +10,9 @@ export async function sortTransaction(groupId: number) {
     const debtRecord = await debts(payment.id);
     return debtRecord;
   }));
+    //console.log('split2中debtsRecords', debtsRecords);
     const cleanDebtRecord = debtsRecords.flat();
+    console.log('split2中cleanDebtRecord', cleanDebtRecord);
     const balancesRecord = computeBalances(cleanDebtRecord);
     //console.log('split2中balancesRecord', balancesRecord);
     const settledBalances = await computeSettlement(balancesRecord, groupId); 

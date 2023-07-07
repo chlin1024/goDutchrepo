@@ -21,6 +21,7 @@ import { groupMember } from './controllers/group_members.js';
 import { signUp } from './controllers/signup.js'
 import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js'
 import { updateDebtor } from './controllers/update_debtors.js'
+import { calpersonalExpenseTotal } from './controllers/personal_expense.js'
 
 import { signUserJWT } from './utils/signJWT.js'
 import { verifyUserJWT } from './utils/verifyJWT.js'
@@ -49,8 +50,9 @@ app.get('/', (req, res) => {
 
 app.get('/wip', async (req, res) => {
   const groupId = 32;
-  const groupSettlements = await getGroupSettlements(groupId);
-  res.json({groupSettlements});
+  const userId = 28;
+  const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
+  res.json({personalExpenseTotal});
 });
 
 app.get('/user/signin', async (req, res) => {
@@ -251,7 +253,8 @@ app.get('/group/:groupId',
     if (isgroupMember) {
       const groupPayments = await printPayments(groupId);
       const groupTransactions = await sortTransaction(groupId);
-      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, invite: `/group/invitation/${groupToken}`});
+      const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
+      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, personalExpenseTotal,invite: `/group/invitation/${groupToken}`});
     } else {
       res.send('you are not group member');
     }
