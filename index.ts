@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { body, param, validationResult } from 'express-validator';
+import { check, body, param, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
@@ -96,7 +96,8 @@ app.post('/user/signup',
 );
 
 app.post('/user/signin', 
-  body('email').exists({checkFalsy: true}).isEmail(), 
+  body('email').exists({checkFalsy: true}),
+  //.isEmail(), 
   body('password').exists({checkFalsy: true}), 
   async (req, res) => {
     const result = validationResult(req);
@@ -160,9 +161,9 @@ app.get ('/group/create', async(req, res) =>{
 app.post('/group/create',body('groupName').exists({checkFalsy:true}), async(req, res) => {
   const result = validationResult(req);
     if (!result.isEmpty()) {
-      res.status(400).json({ statusCode: 400, result});
+      console.log({ errors: result.array() });
+      res.status(400).json({result});
       return; 
-      //res.status(400).json( statusCode: 400, { message: result.array() });
     }
   try{
     const groupName = req.body.groupName;
@@ -257,6 +258,7 @@ app.get('/group/:groupId',
       const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
       const personalpayments = await personalPaymentTotal(groupId, userId);
       const personalsettlements = await personalsettlementsTotal(groupId, userId);
+      console.log({personalExpenseTotal, personalpayments, personalsettlements})
       res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, personalExpenseTotal, personalpayments, personalsettlements, invite: `/group/invitation/${groupToken}`});
     } else {
       res.send('you are not group member');
@@ -274,13 +276,15 @@ app.get('/payment', async (req, res) => {
 })
 
 app.post('/payment/create',
-  body('item').exists({checkFalsy:true}),
-  body('amount').isInt({min:1, max: 10000000}).exists(),
+  body('item').exists({checkFalsy:true}).withMessage("品項不能空白"),
+  body('amount').exists({checkFalsy:true}).withMessage("金額不能空白"),
+  body('amount').isInt({min:1, max: 10000000}).withMessage("金額需在1-10,000,000"),
   async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-      console.log(result);
-      return res.status(400).render('create_group', { errors: result.array() });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log({ errors: errors.array() });
+      res.status(400).json({errors: errors.array()});
+      return; 
     }
     try{
       const {item, creditor, amount, debtors} = req.body;
@@ -304,13 +308,14 @@ app.get('/payment/:paymentId', async (req, res) => {
 })
 
 app.post('/payment/update',
-  body('item').exists({checkFalsy:true}),
-  body('amount').isInt({min:1, max: 10000000}).exists(),
+  body('item').exists({checkFalsy:true}).withMessage("品項不能空白"),
+  body('amount').exists({checkFalsy:true}).withMessage("金額不能空白"),
+  body('amount').isInt({min:1, max: 10000000}).withMessage("金額需在1-10,000,000之間"),
   async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-      console.log(result);
-      return res.status(400).render('create_group', { errors: result.array() });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors);
+      return res.status(400).json( { errors: errors.array() });
     }
     try{
       const {item, creditor, amount, debtors} = req.body;
@@ -349,11 +354,11 @@ app.get('/settlement/create', async (req, res) => {
   res.render('create_settlement', {users: groupUsers, transactionData});
 });
 
-app.post('/settlement/create', body('amount').isInt({min:1, max: 10000000}).exists(), async (req, res) => {
-  const result = validationResult(req);
-    if (!result.isEmpty()) {
-      console.log(result);
-      return res.status(400).render('create_group', { errors: result.array() });
+app.post('/settlement/create', body('amount').isInt({min:1, max: 10000000}).exists().withMessage("金額不能空白"), async (req, res) => {
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors);
+      return res.status(400).json({ errors: errors.array() });
     }
   try{
     const { payer, amount, receiver } = req.body;
