@@ -9,11 +9,11 @@ import CryptoJS from 'crypto-js';
 dotenv.config();
 
 import { getGroupName } from './models/payment_groups.js'
-import { getPaymentDetails, updatePaymentById } from './models/payments.js'
+import { getPaymentDetails, updatePaymentById, getPersonalPayments } from './models/payments.js'
 import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
 import { getuserEmail, getUserPassword, getuserId } from './models/users.js';
-import { createSettlement, getGroupSettlements } from './models/settlements.js'
+import { createSettlement, getGroupSettlements, getPersonalsettlements } from './models/settlements.js'
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
 import { sortTransaction } from './controllers/split2.js'
@@ -21,7 +21,7 @@ import { groupMember } from './controllers/group_members.js';
 import { signUp } from './controllers/signup.js'
 import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js'
 import { updateDebtor } from './controllers/update_debtors.js'
-import { calpersonalExpenseTotal } from './controllers/personal_expense.js'
+import { calpersonalExpenseTotal, personalPaymentTotal, personalsettlementsTotal } from './controllers/personal_expense.js'
 
 import { signUserJWT } from './utils/signJWT.js'
 import { verifyUserJWT } from './utils/verifyJWT.js'
@@ -51,8 +51,9 @@ app.get('/', (req, res) => {
 app.get('/wip', async (req, res) => {
   const groupId = 32;
   const userId = 28;
-  const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
-  res.json({personalExpenseTotal});
+  const personalpayments = await personalPaymentTotal(groupId, userId);
+  const personalsettlements = await personalsettlementsTotal(groupId, userId);
+  res.json({personalpayments, personalsettlements});
 });
 
 app.get('/user/signin', async (req, res) => {
@@ -254,7 +255,9 @@ app.get('/group/:groupId',
       const groupPayments = await printPayments(groupId);
       const groupTransactions = await sortTransaction(groupId);
       const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
-      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, personalExpenseTotal,invite: `/group/invitation/${groupToken}`});
+      const personalpayments = await personalPaymentTotal(groupId, userId);
+      const personalsettlements = await personalsettlementsTotal(groupId, userId);
+      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, personalExpenseTotal, personalpayments, personalsettlements, invite: `/group/invitation/${groupToken}`});
     } else {
       res.send('you are not group member');
     }
