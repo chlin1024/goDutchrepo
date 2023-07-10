@@ -80,13 +80,11 @@ html(lang='en')
               .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
                 .p-6.mb-0.text-center.bg-white.border-b-0.rounded-t-2xl
                   h5 新增群組
-                //div(class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert")
-                  p(class="font-bold" id="data_response")
-                  p Something not ideal might be happening.
                 .flex-auto.p-6
                   form(role='form text-left' class="create_group_form")
                     .mb-4
                       input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.py-2.px-3.font-normal.text-gray-700.transition-all(type='text', id="group_name" class='placeholder:text-gray-500 focus:shadow-primary-outline leading-5.6 focus:border-blue-500 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow', placeholder='新群組名稱', aria-label='item', aria-describedby='item-addon')
+                      div.text-red-600#result
                     .text-center
                       button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="create_group" type="button" onclick="onClick()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') 新增群組
                     //p.mt-4.mb-0.leading-normal.text-sm
@@ -133,14 +131,16 @@ html(lang='en')
           groupName: groupName 
         }
         $.post('/group/create', groupData, function(data){
-          if (data.statusCode === 400) {
-              document.querySelector('#response_data').innerHTML = JSON.stringify(data.result, null, 4);
-              return;
-          } else if (data.statusCode === 200) {
-              //alert('成功');
-              //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
-              window.location.replace(`/group/${data.groupId}`);
+           if (data.statusCode === 200) {
+            console.log(data.groupId);
+            //alert('成功');
+            document.querySelector('#response_data').innerHTML = '成功'
+            window.location.replace(`/group/${data.groupId}`);
           }
         })
+        .fail(function(response) {
+          //alert('失敗');
+          document.querySelector('#result').innerHTML = '！群組名稱不能空白'
+          });
       }
     
