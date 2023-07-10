@@ -132,9 +132,9 @@ html(lang='en')
         }
         $.post('/group/create', groupData, function(data){
            if (data.statusCode === 200) {
-            console.log(data.groupId);
+            //console.log(data.groupId);
             //alert('成功');
-            document.querySelector('#response_data').innerHTML = '成功'
+            //document.querySelector('#response_data').innerHTML = '成功'
             window.location.replace(`/group/${data.groupId}`);
           }
         })

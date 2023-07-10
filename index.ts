@@ -6,13 +6,14 @@ import bcrypt from 'bcryptjs';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import CryptoJS from 'crypto-js';
+import axios from 'axios';
 dotenv.config();
 
 import { getGroupName } from './models/payment_groups.js'
 import { getPaymentDetails, updatePaymentById, getPersonalPayments } from './models/payments.js'
 import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
-import { getuserEmail, getUserPassword, getuserId } from './models/users.js';
+import { getuserEmail, getUserPassword, getuserId, saveAccessTokenLine } from './models/users.js';
 import { createSettlement, getGroupSettlements, getPersonalsettlements } from './models/settlements.js'
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
@@ -49,12 +50,59 @@ app.get('/', (req, res) => {
 });
 
 app.get('/wip', async (req, res) => {
-  const groupId = 32;
-  const userId = 28;
-  const personalpayments = await personalPaymentTotal(groupId, userId);
-  const personalsettlements = await personalsettlementsTotal(groupId, userId);
-  res.json({personalpayments, personalsettlements});
+  res.render('line_notify');
 });
+
+app.get('/callback', async (req, res) => {
+  try{
+    const userToken = req.cookies.jwtUserToken;
+    console.log(userToken)
+    if (userToken) {
+      const payload = verifyUserJWT(userToken);
+      console.log(payload);
+      const userId = payload.userId;
+      if (!payload){
+        res.redirect('/user/signin');
+        return;
+      }
+    const authorizeCode = req.query.code;
+    //console.log(authorizeCode);
+    if (authorizeCode) {
+      const oauthToken = await axios.post('https://notify-bot.line.me/oauth/token', {
+      grant_type: 'authorization_code',
+      code: authorizeCode,
+      redirect_uri:'https://www.cphoebelin.com/callback',
+      client_id: process.env.LINE_CLIENT_ID,
+      client_secret: process.env.LINE_CLIENT_SECRET
+      }, {
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      //console.log(oauthToken.data)
+      const accessTokenLine = oauthToken.data.access_token
+      //const upateLineAcessToken = await saveAccessTokenLine(accessTokenLine, userId);
+      //console.log(upateLineAcessToken);
+      console.log(accessTokenLine);
+      res.send(accessTokenLine);
+    }
+    }  
+  } catch (error){
+    console.error(error);
+  }
+  
+})
+
+app.get('/sent', async(req, res) => {
+  const {debtor, creditor, amount} = req.query;
+  //const transactionData = { debtor, creditor, amount}
+  //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
+  const accessTokenLine = 'dC3EpSxWmFGYW0voD6CaBvIr0nQblQLEnxrkrvyn84f';
+  const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
+    {message: `goDutch説：還款囉！ 連結: http://localhost:3000/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
+    {headers: {'Content-Type': 'application/x-www-form-urlencoded',
+    Authorization: 'Bearer ' + accessTokenLine}})
+  res.send('Notification sent successfully');
+})
+
 
 app.get('/user/signin', async (req, res) => {
   res.render('sign_in');
@@ -139,6 +187,7 @@ app.get('/personal_page', async(req, res) => {
     const userToken = req.cookies.jwtUserToken
     if (userToken) {
       const payload = verifyUserJWT(userToken);
+      console.log(payload);
       const userId = payload.userId;
       if (!payload){
         res.redirect('/user/signin');
@@ -154,7 +203,7 @@ app.get('/personal_page', async(req, res) => {
   }
 })
 
-app.get ('/group/create', async(req, res) =>{
+app.get('/group/create', async(req, res) =>{
   res.render('create_group_new');
 } )
 

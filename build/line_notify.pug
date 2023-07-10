@@ -1,0 +1,18 @@
+doctype html
+html(lang='tw')
+  head
+    title
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    script.
+      function oAuth2() {
+      var URL = 'https://notify-bot.line.me/oauth/authorize?';
+      URL += 'response_type=code';
+      URL += '&client_id=jrhmpemrBpbWKinF8MD44o';
+      URL += '&redirect_uri=https://www.cphoebelin.com/callback';
+      URL += '&scope=notify';
+      URL += '&state=NO_STATE';
+      window.location.href = URL;
+      }
+  body
+    button(onclick='oAuth2();')  &#x9023;&#x7D50;&#x5230; LineNotify &#x6309;&#x9215; 
