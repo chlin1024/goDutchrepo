@@ -91,9 +91,22 @@ html
                       div(class="px-3 text-right basis-1/3")
                         div(class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500")
                           i(class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white")
+          div(class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-6 xl:w-1/4")
+                div(class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
+                  div(class="flex-auto p-4")
+                    div(class="flex flex-row -mx-3")
+                      div(class="flex-none w-2/3 max-w-full px-3")
+                          button(onclick='oAuth2();')
+              
+                            h6(class="mb-2 font-bold dark:text-white text-left") 串接Line Notify通知
+                            p(class="mb-0 dark:text-white dark:opacity-60")
+                              span(class="text-sm font-bold leading-normal text-emerald-500")
+                      div(class="px-3 text-right basis-1/3")
+                        div(class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500")
+                          img(src="./assets/img/LINE_Brand_icon.png" class="w-12 h-12")
+                          //i(class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white")
         div(class="flex flex-wrap -mx-3")
           each group in groups
-        
               div(class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-6 xl:w-1/4")
                 div(class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
                   div(class="flex-auto p-4")
@@ -114,3 +127,13 @@ html
     script(src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1" async)
       <!-- plugin for charts  -->
     script(src="./assets/js/plugins/chartjs.min.js" async)
+    script.
+      function oAuth2() {
+      var URL = 'https://notify-bot.line.me/oauth/authorize?';
+      URL += 'response_type=code';
+      URL += '&client_id=jrhmpemrBpbWKinF8MD44o';
+      URL += '&redirect_uri=https://www.cphoebelin.com/callback';
+      URL += '&scope=notify';
+      URL += '&state=NO_STATE';
+      window.location.href = URL;
+      }
