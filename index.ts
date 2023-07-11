@@ -13,7 +13,7 @@ import { getGroupName } from './models/payment_groups.js'
 import { getPaymentDetails, updatePaymentById, getPersonalPayments } from './models/payments.js'
 import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
-import { getuserEmail, getUserPassword, getuserId, saveAccessTokenLine, getAccessTokenLine } from './models/users.js';
+import { getuserEmail, getUserPassword, getuserId, saveAccessTokenLine, getAccessTokenLine, getUserName } from './models/users.js';
 import { createSettlement, getGroupSettlements, getPersonalsettlements } from './models/settlements.js'
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
@@ -93,15 +93,21 @@ app.get('/callback', async (req, res) => {
 
 app.get('/sent', async(req, res) => {
   try {
+    const groupId = req.cookies.groupId
     const {debtor, creditor, amount} = req.query;
     const debtorId = parseInt(debtor as string);
+    const creditorId = parseInt(creditor as string);
+    const creditorNameResult = await getUserName(creditorId);
+    const creditorName = creditorNameResult[0].name;
+    const groupName = await getGroupName(groupId);
     const accessTokenLine = await getAccessTokenLine(debtorId);
     //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
     const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
-    {message: `還款囉！ 詳情點連結: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
+    {message: `還款囉～ 在${groupName}要給${creditorName}新台幣${amount}！ 點擊連結登記還款: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
     {headers: {'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: 'Bearer ' + accessTokenLine}})
-    res.send('Notification sent successfully');
+    res.redirect(`/group/${groupId}`);
+    //res.render('redirect', {message: 'Notification sent successfully'});
   } catch (error) {
     console.error(error);
   }
@@ -252,15 +258,17 @@ app.get('/group/invitation/:groupToken',
       //res.status(400).json( statusCode: 400, { message: result.array() });
     }
     const groupToken = req.params?.groupToken;
-    const algorithm = CryptoJS.AES;
+    const algorithm = CryptoJS.AES.toString();
     const isValid = groupToken.startsWith(algorithm);
-    if (!isValid) {
+    console.log(isValid);
+    /*if (!isValid) {
       res.status(400).send('Invalid group token');
       return;
-    }
+    }*/
     //const groupId = verifyGroupJWT(groupJWT);
     const groupIdDecrypt = await decryptedGroupId(groupToken);
     const groupId = parseInt(groupIdDecrypt);
+    console.log(groupId);
     const groupMemberArray = await groupMember(groupId);
     const userToken = req.cookies.jwtUserToken
     if (!userToken){
