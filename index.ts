@@ -82,7 +82,7 @@ app.get('/callback', async (req, res) => {
       const upateLineAcessToken = await saveAccessTokenLine(accessTokenLine, userId);
       console.log(upateLineAcessToken);
       console.log(accessTokenLine);
-      res.send(accessTokenLine);
+      res.redirect('/personal_page');
     }
     }  
   } catch (error){
@@ -94,11 +94,11 @@ app.get('/callback', async (req, res) => {
 app.get('/sent', async(req, res) => {
   try {
     const {debtor, creditor, amount} = req.query;
-    const debtorId = 25; //parseInt(debtor as string);
-    const accessTokenLine = getAccessTokenLine(debtorId);
+    const debtorId = parseInt(debtor as string);
+    const accessTokenLine = await getAccessTokenLine(debtorId);
     //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
     const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
-    {message: `goDutch説：還款囉！ 連結: http://localhost:3000/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
+    {message: `還款囉！ 詳情點連結: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
     {headers: {'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: 'Bearer ' + accessTokenLine}})
     res.send('Notification sent successfully');
