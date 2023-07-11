@@ -13,7 +13,7 @@ import { getGroupName } from './models/payment_groups.js'
 import { getPaymentDetails, updatePaymentById, getPersonalPayments } from './models/payments.js'
 import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
-import { getuserEmail, getUserPassword, getuserId, saveAccessTokenLine } from './models/users.js';
+import { getuserEmail, getUserPassword, getuserId, saveAccessTokenLine, getAccessTokenLine } from './models/users.js';
 import { createSettlement, getGroupSettlements, getPersonalsettlements } from './models/settlements.js'
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
@@ -79,8 +79,8 @@ app.get('/callback', async (req, res) => {
       })
       //console.log(oauthToken.data)
       const accessTokenLine = oauthToken.data.access_token
-      //const upateLineAcessToken = await saveAccessTokenLine(accessTokenLine, userId);
-      //console.log(upateLineAcessToken);
+      const upateLineAcessToken = await saveAccessTokenLine(accessTokenLine, userId);
+      console.log(upateLineAcessToken);
       console.log(accessTokenLine);
       res.send(accessTokenLine);
     }
@@ -92,17 +92,20 @@ app.get('/callback', async (req, res) => {
 })
 
 app.get('/sent', async(req, res) => {
-  const {debtor, creditor, amount} = req.query;
-  //const transactionData = { debtor, creditor, amount}
-  //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
-  const accessTokenLine = 'dC3EpSxWmFGYW0voD6CaBvIr0nQblQLEnxrkrvyn84f';
-  const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
+  try {
+    const {debtor, creditor, amount} = req.query;
+    const debtorId = 25; //parseInt(debtor as string);
+    const accessTokenLine = getAccessTokenLine(debtorId);
+    //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
+    const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
     {message: `goDutch説：還款囉！ 連結: http://localhost:3000/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
     {headers: {'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: 'Bearer ' + accessTokenLine}})
-  res.send('Notification sent successfully');
+    res.send('Notification sent successfully');
+  } catch (error) {
+    console.error(error);
+  }
 })
-
 
 app.get('/user/signin', async (req, res) => {
   res.render('sign_in');
@@ -308,7 +311,10 @@ app.get('/group/:groupId',
       const personalpayments = await personalPaymentTotal(groupId, userId);
       const personalsettlements = await personalsettlementsTotal(groupId, userId);
       console.log({personalExpenseTotal, personalpayments, personalsettlements})
-      res.render('group_page', {groupName: groupName, users: groupUsers, transactions: groupTransactions, payments: groupPayments, personalExpenseTotal, personalpayments, personalsettlements, invite: `/group/invitation/${groupToken}`});
+      res.render('group_page', {groupName: groupName, users: groupUsers, 
+        transactions: groupTransactions, payments: groupPayments, 
+        personalExpenseTotal, personalpayments, personalsettlements, 
+        invite: `/group/invitation/${groupToken}`});
     } else {
       res.send('you are not group member');
     }

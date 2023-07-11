@@ -51,9 +51,18 @@ export async function getuserData(email: string) {
 export async function saveAccessTokenLine(accessTokenLine: string, userId: number) {
   console.log('存資料庫');
   const [result] : any = await promisePool.query(
-    `UPDATE users SET line_access_token = ? WHERE ID = ?`, 
+    `UPDATE users SET line_access_token = ? WHERE Id = ?`, 
      [accessTokenLine, userId]);
   console.log('成功');
   return result;
 }
 
+export async function getAccessTokenLine(userId: number){
+  const [result] : any = await promisePool.query(
+    `SELECT line_access_token from users WHERE Id = ?`, 
+     [userId]);
+  //console.log(result);
+  const accessTokenLine = result[0].line_access_token;
+  console.log(accessTokenLine);
+  return accessTokenLine;
+}
