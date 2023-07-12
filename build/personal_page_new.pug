@@ -18,7 +18,7 @@ html
     <!-- Main Styling -->
     link(href="./assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet")
   body(class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500")
-    div(class="absolute w-full bg-blue-500 dark:hidden min-h-75")
+    div(class="absolute w-full bg-orange min-h-75")
     //side nav
     aside(class="fixed inset-y-0 flex-wrap items-center justify-between block w-full p-0 my-4 overflow-y-auto antialiased transition-transform duration-200 -translate-x-full bg-white border-0 shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0" aria-expanded="false")
       div(class="h-19")
@@ -33,24 +33,24 @@ html
             a(class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="/personal_page")
               div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
                 i(class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2")
-              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Personal Page
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") 個人頁面
           li(class="mt-0.5 w-full")
             a(class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="/personal_page")
               div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
                 i(class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2")
-              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Groups  
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") 群組  
           li(class="w-full mt-4")
             h6(class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60") Account pages
           li(class="mt-0.5 w-full")
             a(class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="/user/signin")
               div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
                 i(class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04")
-              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Sign In
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") 會員登入
           li(class="mt-0.5 w-full")
             a(class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="/user/signup")
               div(class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5")
                 i(class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection")
-              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") Sign Up
+              span(class="ml-1 duration-300 opacity-100 pointer-events-none ease") 會員註冊
     main(class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl")
       nav(class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all ease-in shadow-none duration-250 rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="false")
         div(class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit")
@@ -64,7 +64,7 @@ html
           li(class="flex items-center")
             a(href="/user/signin" class="block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand")
               i(class="fa fa-user sm:mr-1")
-              span(class="hidden sm:inline") Sign In
+              span(class="hidden sm:inline") 登入
           li(class="flex items-center pl-4 xl:hidden")
             a(href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger)
               div(class="w-4.5 overflow-hidden")
@@ -84,13 +84,13 @@ html
                       div(class="flex-none w-2/3 max-w-full px-3")
                         a(href=`/group/create`)
                           div
-                            p(class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60") 群組
+                            //p(class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60") 群組
                             h5(class="mb-2 font-bold dark:text-white") 新增群組
                             p(class="mb-0 dark:text-white dark:opacity-60")
                               span(class="text-sm font-bold leading-normal text-emerald-500")
                       div(class="px-3 text-right basis-1/3")
                         div(class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500")
-                          i(class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white")
+                          i(class="ni leading-none ni-send text-lg relative top-3.5 text-white")
           div(class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-6 xl:w-1/4")
                 div(class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
                   div(class="flex-auto p-4")
@@ -98,7 +98,7 @@ html
                       div(class="flex-none w-2/3 max-w-full px-3")
                           button(onclick='oAuth2();')
               
-                            h6(class="mb-2 font-bold dark:text-white text-left") 串接Line Notify通知
+                            h6(class="mb-2 font-bold dark:text-white text-left") 帳號連接Line通知
                             p(class="mb-0 dark:text-white dark:opacity-60")
                               span(class="text-sm font-bold leading-normal text-emerald-500")
                       div(class="px-3 text-right basis-1/3")
@@ -120,7 +120,7 @@ html
                               span(class="text-sm font-bold leading-normal text-emerald-500")
                       div(class="px-3 text-right basis-1/3")
                         div(class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500")
-                          i(class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white")
+                          i(class="ni leading-none ni-archive-2 text-lg relative top-3.5 text-white")
       <!-- plugin for scrollbar  -->
     script(src="../assets/js/plugins/perfect-scrollbar.min.js" async)
       <!-- main script file  -->

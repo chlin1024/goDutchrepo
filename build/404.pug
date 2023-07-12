@@ -1,13 +1,68 @@
-html
+doctype html
+//
+  =========================================================
+  * Argon Dashboard 2 Tailwind - v1.0.1
+  =========================================================
+  * Product Page: https://www.creative-tim.com/product/argon-dashboard-tailwind
+  * Copyright 2022 Creative Tim (https://www.creative-tim.com)
+  * Coded by www.creative-tim.com
+  =========================================================
+  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+html(lang='en')
   head
-    link(href="/output.css" rel="stylesheet")
-  body
-    main(class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8")
-      div(class="text-center")
-        p(class="text-base font-semibold text-primary") 404
-        h1(class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl") Page not found
-        p(class="mt-6 text-base leading-7 text-gray-600") Sorry, we couldn’t find the page you’re looking for.
-        div(class="mt-10 flex items-center justify-center gap-x-6")
-          a(href="/" class="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600") Go back home
-          //a(href="#" class="text-sm font-semibold text-gray-900") Contact support 
-            span(aria-hidden="true") &rarr;
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='apple-touch-icon', sizes='76x76', href='../assets/img/apple-icon.png')
+    link(rel='icon', type='image/png', href='../assets/img/favicon.png')
+    title goDutch
+    // Fonts and icons
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700', rel='stylesheet')
+    // Font Awesome Icons
+    script(src='https://kit.fontawesome.com/42d5adcbca.js', crossorigin='anonymous')
+    // Nucleo Icons
+    link(href='../assets/css/nucleo-icons.css', rel='stylesheet')
+    link(href='../assets/css/nucleo-svg.css', rel='stylesheet')
+    // Main Styling
+    link(href='../assets/css/argon-dashboard-tailwind.css?v=1.0.1', rel='stylesheet')
+  body.m-0.font-sans.antialiased.font-normal.bg-white.text-start.text-base.leading-default.text-slate-500
+    // Navbar
+    nav.absolute.top-0.z-30.flex.flex-wrap.items-center.justify-between.w-full.px-4.py-2.mt-6.mb-4.shadow-none(class='lg:flex-nowrap lg:justify-start')
+      .container.flex.items-center.justify-between.py-0.flex-wrap-inherit
+        a.ml-4.mr-4.font-bold.text-white.text-sm.whitespace-nowrap(class='py-1.75 lg:ml-0', href='/tim.com/argon-dashboard-tailwind/pages/dashboard.html', target='_blank')  goDutch 
+        button.px-3.py-1.ml-2.leading-none.transition-all.ease-in-out.bg-transparent.border.border-transparent.border-solid.rounded-lg.shadow-none.cursor-pointer.text-lg(navbar-trigger='', class='lg:hidden', type='button', aria-controls='navigation', aria-expanded='false', aria-label='Toggle navigation')
+          span.inline-block.mt-2.align-middle.bg-center.bg-no-repeat.bg-cover.w-6.h-6.bg-none
+            span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar1='', class='w-5.5')
+            span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar2='', class='w-5.5 mt-1.75')
+            span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar3='', class='w-5.5 mt-1.75')
+        .items-center.flex-grow.transition-all.ease.duration-350.basis-full.rounded-2xl(navbar-menu='', class='lg-max:bg-white lg-max:max-h-0 lg-max:overflow-hidden lg:flex lg:basis-auto')
+          ul.flex.flex-col.pl-0.mx-auto.mb-0.list-none(class='lg-max:py-2 lg:flex-row xl:ml-auto')
+            li
+              a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/personal_page')
+                i.mr-1.text-white.fa.fa-user.opacity-60(class='lg-max:text-slate-700') 個人頁面
+            li
+              a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/user/signup')
+                i.mr-1.text-white.fas.fa-user-circle.opacity-60(class='lg-max:text-slate-700') 會員註冊
+            li
+              a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/user/signin')
+                i.mr-1.text-white.fas.fa-key.opacity-60(class='lg-max:text-slate-700') 會員登入
+    main.mt-0.transition-all.duration-200.ease-in-out
+      section.min-h-screen
+        .bg-top.relative.flex.items-start.pt-12.pb-56.m-4.overflow-hidden.bg-cover.min-h-50-screen.rounded-xl(class="bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg')]")
+          span.absolute.top-0.left-0.w-full.h-full.bg-center.bg-cover.bg-gradient-to-tl.from-zinc-800.to-zinc-700.opacity-60
+          .container.z-10
+            .flex.flex-wrap.justify-center.-mx-3
+              .w-full.max-w-full.px-3.mx-auto.mt-0.text-center.shrink-0(class='lg:flex-0 lg:w-5/12')
+                h1.mt-12.mb-2.text-white 404
+                h3.text-white 頁面不存在
+        .container
+          .flex.flex-wrap.-mx-3.-mt-48(class='md:-mt-56 lg:-mt-48')
+            .w-full.max-w-full.px-3.mx-auto.mt-0.shrink-0(class='md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12')
+              .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
+                .flex-auto.p-6
+                  .text-center
+                    button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(type="button" onclick="location.href='/';" value="Personal Page" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') 回到首頁
+    // plugin for scrollbar
+    script(src='../assets/js/plugins/perfect-scrollbar.min.js', async='')
+    // main script file
+    script(src='../assets/js/argon-dashboard-tailwind.js?v=1.0.1', async='')

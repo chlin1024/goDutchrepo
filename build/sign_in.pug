@@ -23,7 +23,7 @@ html(lang='en')
           // Navbar
           nav.absolute.top-0.left-0.right-0.z-30.flex.flex-wrap.items-center.px-4.py-2.m-6.mb-0.shadow-sm.rounded-xl.backdrop-blur-2xl.backdrop-saturate-200(class='bg-white/80 lg:flex-nowrap lg:justify-start')
             .flex.items-center.justify-between.w-full.p-0.px-6.mx-auto.flex-wrap-inherit
-              a.text-sm.mr-4.ml-4.whitespace-nowrap.font-bold.text-slate-700(class='py-1.75 lg:ml-0', href='/', target='_blank')  goDutch
+              a.text-sm.mr-4.ml-4.whitespace-nowrap.font-bold.text-slate-700(class='py-1.75 lg:ml-0', href='/', target='_blank') goDutch
               button.px-3.py-1.ml-2.leading-none.transition-all.ease-in-out.bg-transparent.border.border-transparent.border-solid.rounded-lg.shadow-none.cursor-pointer.text-lg(navbar-trigger='', class='lg:hidden', type='button', aria-controls='navigation', aria-expanded='false', aria-label='Toggle navigation')
                 span.inline-block.mt-2.align-middle.bg-center.bg-no-repeat.bg-cover.w-6.h-6.bg-none
                   span.rounded-xs.relative.my-0.mx-auto.block.h-px.bg-gray-600.transition-all.duration-300(bar1='', class='w-5.5')
@@ -31,21 +31,18 @@ html(lang='en')
                   span.rounded-xs.relative.my-0.mx-auto.block.h-px.bg-gray-600.transition-all.duration-300(bar3='', class='w-5.5 mt-1.75')
               .items-center.flex-grow.transition-all.duration-500.ease.basis-full(navbar-menu='', class='lg-max:overflow-hidden lg-max:max-h-0 lg:flex lg:basis-auto')
                 ul.flex.flex-col.pl-0.mx-auto.mb-0.list-none(class='lg:flex-row xl:ml-auto')
-                  li
-                    a.flex.items-center.px-4.py-2.mr-2.font-normal.transition-all.ease-in-out.duration-250.text-sm.text-slate-700(class='lg-max:opacity-0 lg:px-2', aria-current='page', href='/personal_page') 
-                      i.mr-1.fa.fa-chart-pie.opacity-60 Dashboard
-                    
                   //li
-                    a.block.px-4.py-2.mr-2.font-normal.transition-all.ease-in-out.duration-250.text-sm.text-slate-700(class='lg-max:opacity-0 lg:px-2', href='../pages/profile.html')
-                      i.mr-1.fa.fa-user.opacity-60 Profile
-                                          
+                    a.flex.items-center.px-4.py-2.mr-2.font-normal.transition-all.ease-in-out.duration-250.text-sm.text-slate-700(class='lg-max:opacity-0 lg:px-2', aria-current='page', href='/personal_page') 
+                      i.mr-1.fa.fa-chart-pie.opacity-60 個人頁面
                   li
                     a.block.px-4.py-2.mr-2.font-normal.transition-all.ease-in-out.duration-250.text-sm.text-slate-700(class='lg-max:opacity-0 lg:px-2', href='/user/signup')
-                      i.mr-1.fas.fa-user-circle.opacity-60 Sign Up
-                                          
+                      i.mr-1.fa.fa-user.opacity-60 個人頁面  
+                  li
+                    a.block.px-4.py-2.mr-2.font-normal.transition-all.ease-in-out.duration-250.text-sm.text-slate-700(class='lg-max:opacity-0 lg:px-2', href='/user/signup')
+                      i.mr-1.fas.fa-user-circle.opacity-60 會員註冊    
                   li
                     a.block.px-4.py-2.mr-2.font-normal.transition-all.ease-in-out.duration-250.text-sm.text-slate-700(class='lg-max:opacity-0 lg:px-2', href='/user/signin')
-                      i.mr-1.fas.fa-key.opacity-60 Sign In
+                      i.mr-1.fas.fa-key.opacity-60 會員登入
                                           
                 // online builder btn
                 //
@@ -68,8 +65,8 @@ html(lang='en')
               .flex.flex-col.w-full.max-w-full.px-3.mx-auto.shrink-0(class='lg:mx-0 md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12')
                 .relative.flex.flex-col.min-w-0.break-words.bg-transparent.border-0.shadow-none.rounded-2xl.bg-clip-border(class='lg:py4 dark:bg-gray-950')
                   .p-6.pb-0.mb-0
-                    h4.font-bold Sign In
-                    p.mb-0 Enter your email and password to sign in
+                    h4.font-bold 會員登入
+                    p.mb-0 登入請輸入會員email、密碼
                   .flex-auto.p-6
                     form(role='form' class="sign_in_form" action="/user/signin", method="post")
                       .mb-4
@@ -85,22 +82,22 @@ html(lang='en')
                         if errors
                           each error in errors
                             if error.path === 'password'
-                              p.text-red-600 ! Password 不能空白
+                              p.text-red-600 ! 密碼不能空白
                       //.flex.items-center.pl-12.text-left.min-h-6(class='mb-0.5')
                         input#rememberMe.rounded-10.duration-250.ease-in-out.h-5.relative.float-left.-ml-12.w-10.cursor-pointer.appearance-none.border.border-solid.border-gray-200.bg-none.bg-contain.bg-left.bg-no-repeat.align-top.transition-all(class="mt-0.5 after:rounded-circle after:shadow-2xl after:duration-250 checked:after:translate-x-5.3 bg-zinc-700/10 after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-blue-500/95 checked:bg-blue-500/95 checked:bg-none checked:bg-right", type='checkbox')
                         label.ml-2.font-normal.cursor-pointer.select-none.text-sm.text-slate-700(for='rememberMe') Remember me
                       .text-center
-                        button.inline-block.w-full.px-16.mt-6.mb-0.font-bold.leading-normal.text-center.text-white.align-middle.transition-all.bg-blue-500.border-0.rounded-lg.cursor-pointer.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25(type='submit', class='py-3.5 hover:-translate-y-px active:opacity-85 hover:shadow-xs') Sign in
+                        button.inline-block.w-full.px-16.mt-6.mb-0.font-bold.leading-normal.text-center.text-white.align-middle.transition-all.bg-blue-500.border-0.rounded-lg.cursor-pointer.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25(type='submit', class='py-3.5 hover:-translate-y-px active:opacity-85 hover:shadow-xs') 登入
                   .rounded-b-2xl.border-t-0.border-solid.p-6.text-center.pt-0.px-1(class='border-black/12.5 sm:px-6')
                     p.mx-auto.mb-6.leading-normal.text-sm
-                      | Don&apos;t have an account? 
-                      a.font-semibold.text-transparent.bg-clip-text.bg-gradient-to-tl.from-blue-500.to-violet-500(href='/signup') Sign up
+                      | 還不是會員？
+                      a.font-semibold.text-transparent.bg-clip-text.bg-gradient-to-tl.from-blue-500.to-violet-500(href='/user/signup') 註冊會員
               .absolute.top-0.right-0.flex-col.justify-center.hidden.h-full.max-w-full.px-3.pr-0.my-auto.text-center.flex-0(class='w-6/12 lg:flex')
                 .relative.flex.flex-col.justify-center.h-full.bg-cover.px-24.m-4.overflow-hidden.rounded-xl(class="bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg')]")
                   span.absolute.top-0.left-0.w-full.h-full.bg-center.bg-cover.bg-gradient-to-tl.from-blue-500.to-violet-500.opacity-60
-                  h4.z-20.mt-12.font-bold.text-white &quot;Split Wisely&quot;
+                  h4.z-20.mt-12.font-bold.text-white goDutch
                   p.z-20.text-white
-                    | The more effortless the writing looks, the more effort the writer actually put into the process.
+                    | 專注於享受時光，不煩惱金錢分配的繁瑣事務！
     //footer.py-12
       .container
         .flex.flex-wrap.-mx-3

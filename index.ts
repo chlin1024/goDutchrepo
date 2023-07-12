@@ -103,7 +103,7 @@ app.get('/sent', async(req, res) => {
     const accessTokenLine = await getAccessTokenLine(debtorId);
     //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
     const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
-    {message: `還款囉～ 在${groupName}要給${creditorName}新台幣${amount}！ 點擊連結登記還款: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
+    {message: `還款囉～ 在${groupName}要給${creditorName}新台幣${amount}元！ 點擊連結登記還款: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
     {headers: {'Content-Type': 'application/x-www-form-urlencoded',
     Authorization: 'Bearer ' + accessTokenLine}})
     res.redirect(`/group/${groupId}`);
@@ -186,7 +186,7 @@ app.post('/user/signin',
       }
       res.redirect('/personal_page');
   } catch(error){
-    res.status(500).render('users', {error: 'Sever Error. Something went wrong creating token and query user'});
+    res.status(500).render('sign_in', {error: 'Sever Error. Something went wrong creating token and query user'});
     console.error(error);
   }
 });
