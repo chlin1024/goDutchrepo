@@ -1993,6 +1993,18 @@ h6 {
   background-image: none;
 }
 
+.bg-banner {
+  background-image: url('../img/pexels-cottonbro-studio-3943729.jpg');
+}
+
+.bg-side_banner {
+  background-image: url('../img/pexels-cottonbro-studio-3943721.jpg');
+}
+
+.bg-banner_app {
+  background-image: url('../img/pexels-karolina-grabowska-4386341.jpg');
+}
+
 .bg-\[url\(\'https\:\/\/raw\.githubusercontent\.com\/creativetimofficial\/public-assets\/master\/argon-dashboard-pro\/assets\/img\/profile-layout-header\.jpg\'\)\] {
   background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg');
 }
