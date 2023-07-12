@@ -67,8 +67,8 @@ html(lang='en')
               a.inline-block.px-8.py-2.mb-0.mr-1.font-bold.leading-normal.text-center.align-middle.transition-all.ease-in.bg-transparent.border-0.rounded-lg.shadow-md.cursor-pointer.text-xs.tracking-tight-rem.bg-gradient-to-tl.from-gray-400.to-gray-100.text-slate-800(href='https://www.creative-tim.com/product/argon-dashboard-tailwind', target='_blank', class='hover:-translate-y-px hover:shadow-xs active:opacity-85') Use
     main.mt-0.transition-all.duration-200.ease-in-out
       section.min-h-screen
-        .bg-top.relative.flex.items-start.pt-12.pb-56.m-4.overflow-hidden.bg-cover.min-h-50-screen.rounded-xl(class="bg-[url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg')]")
-          span.absolute.top-0.left-0.w-full.h-full.bg-center.bg-cover.bg-gradient-to-tl.from-zinc-800.to-zinc-700.opacity-60
+        .bg-top.relative.flex.items-start.pt-12.pb-56.m-4.overflow-hidden.bg-cover.min-h-50-screen.rounded-xl(class="bg-banner")
+          span.absolute.top-0.left-0.w-full.h-full.bg-center.bg-cover.bg-gradient-to-tl.from-blue-500.to-zinc-700.opacity-60
           .container.z-10
             .flex.flex-wrap.justify-center.-mx-3
               .w-full.max-w-full.px-3.mx-auto.mt-0.text-center.shrink-0(class='lg:flex-0 lg:w-5/12')
@@ -98,7 +98,7 @@ html(lang='en')
                         each user in users
                           option(value=`${user.group_member_id}`)= user.name
                     .text-center
-                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(class="add_settlement" type="button" onclick="onClick()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') 新增
+                      button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-blue-500.to-violet-500(class="add_settlement" type="button" onclick="onClick()" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') 新增
                     //p.mt-4.mb-0.leading-normal.text-sm
                       | Already have an account? 
                       a.font-bold.text-slate-700(href='/user/signin') Sign in
