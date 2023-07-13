@@ -67,6 +67,8 @@ html(lang='en')
                   .p-6.pb-0.mb-0
                     h4.font-bold 會員登入
                     p.mb-0 登入請輸入會員email、密碼
+                    if SignInError
+                      div.text-red-600=SignInError
                   .flex-auto.p-6
                     form(role='form' class="sign_in_form" action="/user/signin", method="post")
                       .mb-4

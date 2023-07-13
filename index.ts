@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
-import CryptoJS from 'crypto-js';
+//import CryptoJS from 'crypto-js';
 import axios from 'axios';
 dotenv.config();
 
@@ -26,7 +26,7 @@ import { calpersonalExpenseTotal, personalPaymentTotal, personalsettlementsTotal
 
 import { signUserJWT } from './utils/signJWT.js'
 import { verifyUserJWT } from './utils/verifyJWT.js'
-import { encryptGroupId, decryptedGroupId} from './utils/crypto.js'
+//import { encryptGroupId, decryptedGroupId} from './utils/crypto.js'
 
 const app = express();
 const port = 3000;
@@ -101,7 +101,6 @@ app.get('/sent', async(req, res) => {
     const creditorName = creditorNameResult[0].name;
     const groupName = await getGroupName(groupId);
     const accessTokenLine = await getAccessTokenLine(debtorId);
-    //const accessTokenLine = 'zi0WTOeqOFKgD13AY5Grc8PfpjciOAKJCmhZfilr1YG';
     const sendNotify= await axios.post('https://notify-api.line.me/api/notify',
     {message: `還款囉～ 在${groupName}要給${creditorName}新台幣${amount}元！ 點擊連結登記還款: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`},
     {headers: {'Content-Type': 'application/x-www-form-urlencoded',
@@ -135,7 +134,7 @@ app.post('/user/signup',
       const referer = req.cookies.referer;
       const existUser = await getuserEmail(signup_email)
       if (existUser.length === 1) {
-        res.status(400).render('sign_up', {error: 'Error! You are exiting user. Please Sign in.'});
+        res.status(400).render('sign_up', {signUpError: '您已經是會員，請登入！'});
       } else if (existUser.length === 0) {
         const userData : any = await signUp(name, signup_email, signup_password);
         const token = userData.token
@@ -172,11 +171,11 @@ app.post('/user/signin',
           if (result) {
           userId = await getuserId(email);
           } else if(!result) {
-          res.status(400).render('sign_in', {error: 'Error! Wrong Password'});
+          res.status(400).render('sign_in', {SignInError: '密碼錯誤'});
           return;
           }
       } else if (existUser.length === 0) {
-        res.status(400).render('sign_in', {error: 'Error! You are not exiting user. Please Sign up.'});
+        res.status(400).render('sign_in', {SignInError: '這個Email尚未註冊會員，請註冊會員！'});
         return;
       }
       const token = signUserJWT(userId)
