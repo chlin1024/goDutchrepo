@@ -9,7 +9,7 @@ import CryptoJS from 'crypto-js';
 import axios from 'axios';
 dotenv.config();
 
-import { getGroupName } from './models/payment_groups.js'
+import { getGroupName, getGroupIdByToken, getGroupToken } from './models/payment_groups.js'
 import { getPaymentDetails, updatePaymentById, getPersonalPayments } from './models/payments.js'
 import { getDebtors } from './models/payment_debtors.js'
 import { createGroupMember, getGroupMember } from './models/group_members.js'
@@ -201,7 +201,7 @@ app.get('/personal_page', async(req, res) => {
       if (!payload){
         res.redirect('/user/signin');
         return;
-      }
+      } 
       const groups = await getGroupData(userId)
       res.render('personal_page_new', {groups : groups});
       } else {
@@ -235,6 +235,7 @@ app.post('/group/create',body('groupName').exists({checkFalsy:true}), async(req,
       res.redirect('/user/signin');
       return;
     }
+    // 
     const groupId = await createGroupControl(groupName, userId);
     //const result = await createGroupMember(groupId, userId);
     //const groupToken = signGroupJWT(groupId);
@@ -258,18 +259,6 @@ app.get('/group/invitation/:groupToken',
       //res.status(400).json( statusCode: 400, { message: result.array() });
     }
     const groupToken = req.params?.groupToken;
-    const algorithm = CryptoJS.AES.toString();
-    const isValid = groupToken.startsWith(algorithm);
-    console.log(isValid);
-    /*if (!isValid) {
-      res.status(400).send('Invalid group token');
-      return;
-    }*/
-    //const groupId = verifyGroupJWT(groupJWT);
-    const groupIdDecrypt = await decryptedGroupId(groupToken);
-    const groupId = parseInt(groupIdDecrypt);
-    console.log(groupId);
-    const groupMemberArray = await groupMember(groupId);
     const userToken = req.cookies.jwtUserToken
     if (!userToken){
       res.cookie("referer", `/group/invitation/${groupToken}`);
@@ -282,11 +271,25 @@ app.get('/group/invitation/:groupToken',
       res.redirect('/user/signin');
       return;
     }
-    const isgroupMember = groupMemberArray.includes(userId)
-    if (!isgroupMember) {
-      const result = await createGroupMember(groupId, userId);
-    } 
-    res.redirect(`/group/${groupId}`);
+    /*const algorithm = CryptoJS.AES.toString();
+    const isValid = groupToken.startsWith(algorithm);
+    console.log(isValid);
+    if (!isValid) {
+      res.status(400).send('Invalid group token');
+      return;
+    }*/
+    //const groupId = verifyGroupJWT(groupJWT);
+    //const groupIdDecrypt = await decryptedGroupId(groupToken);
+    const groupId = await getGroupIdByToken(groupToken)
+    if (groupId) {
+      console.log(groupId);
+      const groupMemberArray = await groupMember(groupId);
+      const isgroupMember = groupMemberArray.includes(userId)
+      if (!isgroupMember) {
+        const result = await createGroupMember(groupId, userId);
+      } 
+      res.redirect(`/group/${groupId}`);
+    }
   }
 );
 
@@ -296,7 +299,8 @@ app.get('/group/:groupId',
   try{
     const groupId : number = parseInt(req.params?.groupId);
     const userJWT = req.cookies.jwtUserToken;
-    const groupToken = await encryptGroupId(groupId);
+    //const groupToken = await encryptGroupId(groupId);
+    const groupToken = await getGroupToken(groupId);
     const payload = verifyUserJWT(userJWT);
     const userId = payload.userId;
     if (!payload){
