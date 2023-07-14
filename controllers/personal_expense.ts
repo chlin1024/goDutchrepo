@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import { getPaymentIds, getPersonalPayments } from '../models/payments.js';
-import { debts } from './debts.js'; 
+import { debts } from './debts.js';
 import { getPersonalsettlements } from '../models/settlements.js';
 
 export async function calpersonalExpenseTotal(groupId: number, userId: number) {
@@ -8,25 +9,33 @@ export async function calpersonalExpenseTotal(groupId: number, userId: number) {
     const debtRecord = await debts(payment.id);
     return debtRecord;
   }));
-    const cleanDebtRecord = debtsRecords.flat();
-    console.log('split2中cleanDebtRecord', cleanDebtRecord);
-    const personalExpense = cleanDebtRecord.filter(debt => debt.debtor === userId);
-    console.log(personalExpense);
-    const personalExpenseTotal = personalExpense.reduce(
-      (accumulator, expense) => accumulator + expense.amount, 0);
-    return personalExpenseTotal;
+  const cleanDebtRecord = debtsRecords.flat();
+  const personalExpense = cleanDebtRecord.filter((debt) => debt.debtor === userId);
+  const personalExpenseTotal = personalExpense.reduce((accumulator, expense) => accumulator + expense.amount, 0);
+  return personalExpenseTotal;
 }
 
-export async function personalPaymentTotal(groupId: number, userId: number){
+interface Payment {
+  id: number;
+  amount: number;
+  item: string;
+}
+
+export async function personalPaymentTotal(groupId: number, userId: number) {
   const personalPayments = await getPersonalPayments(groupId, userId);
-  const personalPaymentTotal = personalPayments.reduce(
-    (accumulator: number, payment: {id: number, amount: number, item: string}) => accumulator + payment.amount, 0);
-  return personalPaymentTotal;
+  const total = personalPayments.reduce((accumulator: number, payment: Payment) => accumulator + payment.amount, 0);
+  return total;
 }
 
-export async function personalsettlementsTotal(groupId: number, userId: number){
+interface Settlement {
+  id: number,
+  payer_id: number,
+  repay_at: number,
+  amount: number,
+}
+
+export async function personalsettlementsTotal(groupId: number, userId: number) {
   const personalsettlements = await getPersonalsettlements(groupId, userId);
-  const personalsettlementTotal = personalsettlements.reduce(
-    (accumulator: number, settlement: {id: number, payer_id: number, repay_at: number, amount: number}) => accumulator + settlement.amount, 0);
-  return personalsettlementTotal;
+  const total = personalsettlements.reduce((accumulator: number, settlement: Settlement) => accumulator + settlement.amount, 0);
+  return total;
 }

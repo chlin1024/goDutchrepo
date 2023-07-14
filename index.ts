@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 import express from 'express';
 import { body, param, validationResult } from 'express-validator';
@@ -23,11 +24,11 @@ import {
 } from './models/users.js';
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
-import { sortTransaction } from './controllers/split2.js';
-import { groupMember } from './controllers/group_members.js';
+import sortTransaction from './controllers/split2.js';
+import groupMember from './controllers/group_members.js';
 import signUp from './controllers/signup.js';
 import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js';
-import { updateDebtor } from './controllers/update_debtors.js';
+import updateDebtor from './controllers/update_debtors.js';
 import { calpersonalExpenseTotal, personalPaymentTotal, personalsettlementsTotal } from './controllers/personal_expense.js';
 
 import signUserJWT from './utils/signJWT.js';
