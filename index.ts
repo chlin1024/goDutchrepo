@@ -25,12 +25,12 @@ import {
 import { createGroupControl, getGroupData } from './controllers/groups.js';
 import { sortTransaction } from './controllers/split2.js';
 import { groupMember } from './controllers/group_members.js';
-import { signUp } from './controllers/signup.js';
+import signUp from './controllers/signup.js';
 import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js';
 import { updateDebtor } from './controllers/update_debtors.js';
 import { calpersonalExpenseTotal, personalPaymentTotal, personalsettlementsTotal } from './controllers/personal_expense.js';
 
-import { signUserJWT } from './utils/signJWT.js';
+import signUserJWT from './utils/signJWT.js';
 import verifyUserJWT from './utils/verifyJWT.js';
 
 dotenv.config();
