@@ -5,10 +5,12 @@ import { getPersonalsettlements } from '../models/settlements.js';
 
 export async function calpersonalExpenseTotal(groupId: number, userId: number) {
   const payments = await getPaymentIds(groupId);
-  const debtsRecords = await Promise.all(payments.map(async (payment : any) => {
-    const debtRecord = await debts(payment.id);
-    return debtRecord;
-  }));
+  const debtsRecords = await Promise.all(
+    payments.map(async (payment: any) => {
+      const debtRecord = await debts(payment.id);
+      return debtRecord;
+    })
+  );
   const cleanDebtRecord = debtsRecords.flat();
   const personalExpense = cleanDebtRecord.filter((debt) => debt.debtor === userId);
   const personalExpenseTotal = personalExpense.reduce((accumulator, expense) => accumulator + expense.amount, 0);
@@ -28,14 +30,17 @@ export async function personalPaymentTotal(groupId: number, userId: number) {
 }
 
 interface Settlement {
-  id: number,
-  payer_id: number,
-  repay_at: number,
-  amount: number,
+  id: number;
+  payer_id: number;
+  repay_at: number;
+  amount: number;
 }
 
 export async function personalsettlementsTotal(groupId: number, userId: number) {
   const personalsettlements = await getPersonalsettlements(groupId, userId);
-  const total = personalsettlements.reduce((accumulator: number, settlement: Settlement) => accumulator + settlement.amount, 0);
+  const total = personalsettlements.reduce(
+    (accumulator: number, settlement: Settlement) => accumulator + settlement.amount,
+    0
+  );
   return total;
 }

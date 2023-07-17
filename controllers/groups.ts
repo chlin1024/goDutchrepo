@@ -9,13 +9,15 @@ export async function createGroupControl(groupName: string, userId: number) {
 
 export async function getGroupData(userId: number) {
   const groupIds = await getGroupsByMemberId(userId);
-  const groups = await Promise.all(groupIds.map(async (groupId: { group_id: number }) => {
-    const id = groupId.group_id;
-    const name = await getGroupName(id);
-    return {
-      groupId: id,
-      groupName: name,
-    };
-  }));
+  const groups = await Promise.all(
+    groupIds.map(async (groupId: { group_id: number }) => {
+      const id = groupId.group_id;
+      const name = await getGroupName(id);
+      return {
+        groupId: id,
+        groupName: name,
+      };
+    })
+  );
   return groups;
 }

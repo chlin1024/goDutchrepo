@@ -1,57 +1,57 @@
 import promisePool from './databasePool.js';
 
 export async function countDebtors(paymentId: number) {
-  const [getDebtorCounts] : any = await promisePool.query(
+  const [getDebtorCounts]: any = await promisePool.query(
     `SELECT COUNT(debtor_id) FROM payment_debtors 
      WHERE payment_id = ?`,
-    [paymentId],
+    [paymentId]
   );
   return getDebtorCounts;
 }
 
 export async function createDebtors(paymentId: number, debtorId: number) {
-  const [insertDebtors] : any = await promisePool.query(
+  const [insertDebtors]: any = await promisePool.query(
     `INSERT INTO payment_debtors (payment_id, debtor_id)
      VALUES (?, ?)`,
-    [paymentId, debtorId],
+    [paymentId, debtorId]
   );
   const { insertId } = insertDebtors;
   return insertId;
 }
 
 export async function getDebtors(paymentId: number) {
-  const [debtorsIds] : any = await promisePool.query(
+  const [debtorsIds]: any = await promisePool.query(
     `SELECT debtor_id FROM payment_debtors 
      WHERE payment_id = ?`,
-    [paymentId],
+    [paymentId]
   );
   return debtorsIds;
 }
 
 export async function deleteDebtorsByPaymentId(paymentId: number) {
-  const [result] : any = await promisePool.query(
+  const [result]: any = await promisePool.query(
     `DELETE FROM payment_debtors 
      WHERE payment_id = ?`,
-    [paymentId],
+    [paymentId]
   );
   return result;
 }
 
 export async function deleteDebtor(paymentId: number, debtorId: number) {
-  const [result] : any = await promisePool.query(
+  const [result]: any = await promisePool.query(
     `DELETE FROM payment_debtors 
      WHERE payment_id = ? and debtor_id = ?`,
-    [paymentId, debtorId],
+    [paymentId, debtorId]
   );
   return result;
 }
 
-export async function updateDebtorsByPaymentId(paymentId: number, debtorId:number) {
-  const [result] : any = await promisePool.query(
+export async function updateDebtorsByPaymentId(paymentId: number, debtorId: number) {
+  const [result]: any = await promisePool.query(
     `UPDATE payment_debtors
      SET  debtor_id = ?
      WHERE payment_id = ?`,
-    [debtorId, paymentId],
+    [debtorId, paymentId]
   );
   return result;
 }

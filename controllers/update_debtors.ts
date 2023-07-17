@@ -13,9 +13,9 @@ export default async function updateDebtor(updateDebtorsString: string[], paymen
     });
     const updateDebtors = updateDebtorsString.map((str) => parseInt(str, 10));
     const newDebtors = getDifference(updateDebtors, originDebtors);
-    newDebtors.map((debtor : any) => createDebtors(paymentId, debtor));
+    newDebtors.map((debtor: any) => createDebtors(paymentId, debtor));
     const deleteDebtors = getDifference(originDebtors, updateDebtors);
-    deleteDebtors.map((debtor : any) => deleteDebtor(paymentId, debtor));
+    deleteDebtors.map((debtor: any) => deleteDebtor(paymentId, debtor));
     return true;
   } catch (error) {
     return error;

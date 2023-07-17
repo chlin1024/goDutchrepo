@@ -11,7 +11,7 @@ export async function debts(paymentId: number) {
     const creditor = payment.creditor_id;
     const { amount } = payment;
     const amountPerDebtor = Math.round(amount / numberOfDebtors);
-    debtors.forEach((debtor : any) => {
+    debtors.forEach((debtor: any) => {
       const debt = {
         paymentId,
         numberOfDebtors,

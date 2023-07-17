@@ -1,88 +1,88 @@
 import promisePool from './databasePool.js';
 
 export async function createPayment(
-  item : string,
-  amount : number,
-  creditorId : number,
-  groupId : number,
-  Numberofdebtor : number,
+  item: string,
+  amount: number,
+  creditorId: number,
+  groupId: number,
+  Numberofdebtor: number
 ) {
-  const [insertPayment] : any = await promisePool.query(
+  const [insertPayment]: any = await promisePool.query(
     `INSERT INTO payments (item, amount, creditor_id, group_id, debtors_no)
      VALUES (?, ?, ?, ?, ?)`,
-    [item, amount, creditorId, groupId, Numberofdebtor],
+    [item, amount, creditorId, groupId, Numberofdebtor]
   );
   const { insertId } = insertPayment;
   return insertId;
 }
 
 export async function getGroupPayments(groupId: number) {
-  const [groupPayments] : any = await promisePool.query(
+  const [groupPayments]: any = await promisePool.query(
     `SELECT id, creditor_id, amount, item FROM payments 
      WHERE group_id = ?`,
-    [groupId],
+    [groupId]
   );
   return groupPayments;
 }
 
 export async function getPaymentDetails(paymentId: number) {
-  const [PaymentDetails] : any = await promisePool.query(
+  const [PaymentDetails]: any = await promisePool.query(
     `SELECT creditor_id, amount, item FROM payments 
      WHERE id = ?`,
-    [paymentId],
+    [paymentId]
   );
   return PaymentDetails;
 }
 
 export async function getPaymentIds(groupId: number) {
-  const [paymentIds] : any = await promisePool.query(
+  const [paymentIds]: any = await promisePool.query(
     `SELECT id FROM payments 
      WHERE group_id = ?`,
-    [groupId],
+    [groupId]
   );
   return paymentIds;
 }
 
 export async function updatePaymentById(
-  item : string,
-  amount : number,
-  creditorId : number,
-  numberOfDebtors : number,
-  paymentId: number,
+  item: string,
+  amount: number,
+  creditorId: number,
+  numberOfDebtors: number,
+  paymentId: number
 ) {
-  const [result] : any = await promisePool.query(
+  const [result]: any = await promisePool.query(
     `UPDATE payments
      SET item = ?, amount = ?, creditor_id = ?, debtors_no = ?
      WHERE id = ?`,
-    [item, amount, creditorId, numberOfDebtors, paymentId],
+    [item, amount, creditorId, numberOfDebtors, paymentId]
   );
   return result;
 }
 
 export async function deletePaymentById(paymentId: number) {
-  const [result] : any = await promisePool.query(
+  const [result]: any = await promisePool.query(
     `DELETE FROM payments 
      WHERE id = ?`,
-    [paymentId],
+    [paymentId]
   );
   return result;
 }
 
-export async function updatePayment(debtorId:number, paymentId: number) {
-  const [result] : any = await promisePool.query(
+export async function updatePayment(debtorId: number, paymentId: number) {
+  const [result]: any = await promisePool.query(
     `UPDATE payments
      SET (item, amount, creditor_id, debtors_no) = ?
      WHERE id = ?`,
-    [debtorId, paymentId],
+    [debtorId, paymentId]
   );
   return result;
 }
 
 export async function getPersonalPayments(groupId: number, userId: number) {
-  const [personalPayments] : any = await promisePool.query(
+  const [personalPayments]: any = await promisePool.query(
     `SELECT id, amount, item FROM payments 
      WHERE group_id = ? AND creditor_id = ?`,
-    [groupId, userId],
+    [groupId, userId]
   );
   return personalPayments;
 }

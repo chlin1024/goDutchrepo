@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable consistent-return */
 import express from 'express';
 import { body, param, validationResult } from 'express-validator';
 import path from 'path';
@@ -29,7 +27,11 @@ import groupMember from './controllers/group_members.js';
 import signUp from './controllers/signup.js';
 import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js';
 import updateDebtor from './controllers/update_debtors.js';
-import { calpersonalExpenseTotal, personalPaymentTotal, personalsettlementsTotal } from './controllers/personal_expense.js';
+import {
+  calpersonalExpenseTotal,
+  personalPaymentTotal,
+  personalsettlementsTotal,
+} from './controllers/personal_expense.js';
 
 import signUserJWT from './utils/signJWT.js';
 import verifyUserJWT from './utils/verifyJWT.js';
@@ -72,15 +74,19 @@ app.get('/callback', async (req, res) => {
       }
       const authorizeCode = req.query.code;
       if (authorizeCode) {
-        const oauthToken = await axios.post('https://notify-bot.line.me/oauth/token', {
-          grant_type: 'authorization_code',
-          code: authorizeCode,
-          redirect_uri: 'https://www.cphoebelin.com/callback',
-          client_id: process.env.LINE_CLIENT_ID,
-          client_secret: process.env.LINE_CLIENT_SECRET,
-        }, {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        });
+        const oauthToken = await axios.post(
+          'https://notify-bot.line.me/oauth/token',
+          {
+            grant_type: 'authorization_code',
+            code: authorizeCode,
+            redirect_uri: 'https://www.cphoebelin.com/callback',
+            client_id: process.env.LINE_CLIENT_ID,
+            client_secret: process.env.LINE_CLIENT_SECRET,
+          },
+          {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          }
+        );
         const accessTokenLine = oauthToken.data.access_token;
         await saveAccessTokenLine(accessTokenLine, userId);
         res.redirect('/personal_page');
@@ -112,7 +118,7 @@ app.get('/sent', async (req, res) => {
           'Content-Type': 'application/x-www-form-urlencoded',
           Authorization: `Bearer ${accessTokenLine}`,
         },
-      },
+      }
     );
     res.redirect(`/group/${groupId}`);
   } catch (error) {
@@ -131,7 +137,10 @@ app.get('/user/signup', async (req, res) => {
 app.post(
   '/user/signup',
   body('name').exists({ checkFalsy: true }).withMessage('名字不能空白').trim(),
-  body('signupEmail').exists({ checkFalsy: true }).withMessage('Email不能空白').isEmail()
+  body('signupEmail')
+    .exists({ checkFalsy: true })
+    .withMessage('Email不能空白')
+    .isEmail()
     .withMessage('請輸入正確Email'),
   body('signupPassword').exists({ checkFalsy: true }).withMessage('密碼不能空白'),
   async (req, res) => {
@@ -146,7 +155,7 @@ app.post(
       if (existUser.length === 1) {
         res.status(400).render('sign_up', { signUpError: '您已經是會員，請登入！' });
       } else if (existUser.length === 0) {
-        const userData : any = await signUp(name, signupEmail, signupPassword);
+        const userData: any = await signUp(name, signupEmail, signupPassword);
         const { token } = userData;
         res.cookie('jwtUserToken', token);
         if (referer) {
@@ -154,17 +163,17 @@ app.post(
         }
         res.redirect('/personal_page');
       }
+      return res.status(200);
     } catch (error) {
       console.error(error);
-      res.status(500);
+      return res.status(500);
     }
-  },
+  }
 );
 
 app.post(
   '/user/signin',
-  body('email').exists({ checkFalsy: true }).withMessage('Email不能空白').isEmail()
-    .withMessage('請輸入正確Email'),
+  body('email').exists({ checkFalsy: true }).withMessage('Email不能空白').isEmail().withMessage('請輸入正確Email'),
   body('password').exists({ checkFalsy: true }).withMessage('密碼不能空白'),
   async (req, res) => {
     const errors = validationResult(req);
@@ -182,10 +191,10 @@ app.post(
         if (result) {
           userId = await getuserId(email);
         } else if (!result) {
-          res.status(400).render('sign_in', { SignInError: '密碼錯誤' });
+          return res.status(400).render('sign_in', { SignInError: '密碼錯誤' });
         }
       } else if (existUser.length === 0) {
-        res.status(400).render('sign_in', { SignInError: '這個Email尚未註冊會員，請註冊會員！' });
+        return res.status(400).render('sign_in', { SignInError: '這個Email尚未註冊會員，請註冊會員！' });
       }
       const token = signUserJWT(userId);
       res.cookie('jwtUserToken', token);
@@ -193,11 +202,12 @@ app.post(
         res.redirect(referer);
       }
       res.redirect('/personal_page');
+      return res.status(200);
     } catch (error) {
-      res.status(500).render('sign_in', { error: 'Sever Error. Something went wrong creating token and query user' });
       console.error(error);
+      return res.status(500).render('sign_in', { error });
     }
-  },
+  }
 );
 
 app.get('/personal_page', async (req, res) => {
@@ -250,88 +260,80 @@ app.post('/group/create', body('groupName').exists({ checkFalsy: true }), async 
   }
 });
 
-app.get(
-  '/group/invitation/:groupToken',
-  param('groupToken').exists({ checkFalsy: true }),
-  async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-      console.log(result);
-      res.status(400).send({ statusCode: 400, result });
-      return;
+app.get('/group/invitation/:groupToken', param('groupToken').exists({ checkFalsy: true }), async (req, res) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    console.log(result);
+    res.status(400).send({ statusCode: 400, result });
+    return;
+  }
+  const groupToken = req.params?.groupToken;
+  const userToken = req.cookies.jwtUserToken;
+  if (!userToken) {
+    res.cookie('referer', `/group/invitation/${groupToken}`);
+    res.redirect('/user/signin');
+    return;
+  }
+  const payload = verifyUserJWT(userToken);
+  const { userId } = payload;
+  if (!payload) {
+    res.redirect('/user/signin');
+    return;
+  }
+  const groupId = await getGroupIdByToken(groupToken);
+  if (groupId) {
+    const groupMemberArray = await groupMember(groupId);
+    const isgroupMember = groupMemberArray.includes(userId);
+    if (!isgroupMember) {
+      await createGroupMember(groupId, userId);
     }
-    const groupToken = req.params?.groupToken;
-    const userToken = req.cookies.jwtUserToken;
-    if (!userToken) {
-      res.cookie('referer', `/group/invitation/${groupToken}`);
-      res.redirect('/user/signin');
-      return;
-    }
-    const payload = verifyUserJWT(userToken);
+    res.redirect(`/group/${groupId}`);
+  }
+});
+
+app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) => {
+  try {
+    const groupId: number = parseInt(req.params?.groupId, 10);
+    const userJWT = req.cookies.jwtUserToken;
+    const groupToken = await getGroupToken(groupId);
+    const payload = verifyUserJWT(userJWT);
     const { userId } = payload;
     if (!payload) {
       res.redirect('/user/signin');
       return;
     }
-    const groupId = await getGroupIdByToken(groupToken);
-    if (groupId) {
-      const groupMemberArray = await groupMember(groupId);
-      const isgroupMember = groupMemberArray.includes(userId);
-      if (!isgroupMember) {
-        await createGroupMember(groupId, userId);
-      }
-      res.redirect(`/group/${groupId}`);
+    if (!groupId) {
+      res.status(400).send('Please provide group Id');
+      return;
     }
-  },
-);
-
-app.get(
-  '/group/:groupId',
-  param('groupId').isInt().exists(),
-  async (req, res) => {
-    try {
-      const groupId : number = parseInt(req.params?.groupId, 10);
-      const userJWT = req.cookies.jwtUserToken;
-      const groupToken = await getGroupToken(groupId);
-      const payload = verifyUserJWT(userJWT);
-      const { userId } = payload;
-      if (!payload) {
-        res.redirect('/user/signin');
-        return;
-      }
-      if (!groupId) {
-        res.status(400).send('Please provide group Id');
-        return;
-      }
-      res.cookie('groupId', groupId);
-      const groupName = await getGroupName(groupId);
-      const groupUsers = await getGroupMember(groupId);
-      const groupMemberArray = await groupMember(groupId);
-      const isgroupMember = groupMemberArray.includes(userId);
-      if (isgroupMember) {
-        const groupPayments = await printPayments(groupId);
-        const groupTransactions = await sortTransaction(groupId);
-        const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
-        const personalpayments = await personalPaymentTotal(groupId, userId);
-        const personalsettlements = await personalsettlementsTotal(groupId, userId);
-        res.render('group_page', {
-          groupName,
-          users: groupUsers,
-          transactions: groupTransactions,
-          payments: groupPayments,
-          personalExpenseTotal,
-          personalpayments,
-          personalsettlements,
-          invite: `/group/invitation/${groupToken}`,
-        });
-      } else {
-        res.send('you are not group member');
-      }
-    } catch (error) {
-      res.status(500);
+    res.cookie('groupId', groupId);
+    const groupName = await getGroupName(groupId);
+    const groupUsers = await getGroupMember(groupId);
+    const groupMemberArray = await groupMember(groupId);
+    const isgroupMember = groupMemberArray.includes(userId);
+    if (isgroupMember) {
+      const groupPayments = await printPayments(groupId);
+      const groupTransactions = await sortTransaction(groupId);
+      const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
+      const personalpayments = await personalPaymentTotal(groupId, userId);
+      const personalsettlements = await personalsettlementsTotal(groupId, userId);
+      res.render('group_page', {
+        groupName,
+        users: groupUsers,
+        transactions: groupTransactions,
+        payments: groupPayments,
+        personalExpenseTotal,
+        personalpayments,
+        personalsettlements,
+        invite: `/group/invitation/${groupToken}`,
+      });
+    } else {
+      res.send('you are not group member');
     }
-  },
-);
+  } catch (error) {
+    res.status(500);
+  }
+});
 
 app.get('/payment', async (req, res) => {
   const { groupId } = req.cookies;
@@ -351,12 +353,7 @@ app.post(
       return;
     }
     try {
-      const {
-        item,
-        creditor,
-        amount,
-        debtors,
-      } = req.body;
+      const { item, creditor, amount, debtors } = req.body;
       const numberOfDebtors = debtors.length;
       const { groupId } = req.cookies;
       await createPaymentcontrol(item, amount, creditor, groupId, numberOfDebtors, debtors);
@@ -364,12 +361,12 @@ app.post(
     } catch (error) {
       res.status(500).json({ statusCode: 500 });
     }
-  },
+  }
 );
 
 app.get('/payment/:paymentId', async (req, res) => {
   try {
-    const paymentId : number = parseInt(req.params?.paymentId, 10);
+    const paymentId: number = parseInt(req.params?.paymentId, 10);
     const { groupId } = req.cookies;
     const paymentData = await getPaymentDetails(paymentId);
     if (paymentData.length === 1) {
@@ -396,39 +393,31 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const {
-        item,
-        creditor,
-        amount,
-        debtors,
-      } = req.body;
+      const { item, creditor, amount, debtors } = req.body;
       const paymentId = parseInt(req.cookies.paymentId, 10);
       const numberOfDebtors = debtors.length;
       const { groupId } = req.cookies;
       const creditorId = creditor;
       await updatePaymentById(item, amount, creditorId, numberOfDebtors, paymentId);
       await updateDebtor(debtors, paymentId);
-      res.status(200).json({ statusCode: 200, groupId });
+      return res.status(200).json({ statusCode: 200, groupId });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ statusCode: 500 });
+      return res.status(500).json({ statusCode: 500 });
     }
-  },
+  }
 );
 
-app.post(
-  '/payment/delete',
-  async (req, res) => {
-    try {
-      const { paymentId, groupId } = req.cookies;
-      await deletePayment(paymentId);
-      res.status(200).json({ statusCode: 200, groupId });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ statusCode: 500 });
-    }
-  },
-);
+app.post('/payment/delete', async (req, res) => {
+  try {
+    const { paymentId, groupId } = req.cookies;
+    await deletePayment(paymentId);
+    res.status(200).json({ statusCode: 200, groupId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ statusCode: 500 });
+  }
+});
 
 app.get('/settlement/create', async (req, res) => {
   const { debtor, creditor, amount } = req.query;
@@ -440,7 +429,9 @@ app.get('/settlement/create', async (req, res) => {
 
 app.post(
   '/settlement/create',
-  body('amount').exists({ checkFalsy: true }).withMessage('金額不能空白')
+  body('amount')
+    .exists({ checkFalsy: true })
+    .withMessage('金額不能空白')
     .isInt({ min: 1, max: 10000000 })
     .withMessage('請輸入數字，且金額需在1-10,000,000之間'),
   async (req, res) => {
@@ -453,11 +444,12 @@ app.post(
       const { payer, amount, receiver } = req.body;
       const { groupId } = req.cookies;
       await createSettlement(amount, payer, groupId, receiver);
-      res.status(200).json({ statusCode: 200, groupId });
+      return res.status(200).json({ statusCode: 200, groupId });
     } catch (error) {
       console.error(error);
+      return res.status(500);
     }
-  },
+  }
 );
 
 app.all('*', (req, res) => {
