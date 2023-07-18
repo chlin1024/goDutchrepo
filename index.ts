@@ -31,6 +31,7 @@ import {
   calpersonalExpenseTotal,
   personalPaymentTotal,
   personalsettlementsTotal,
+  personalRepaymentTotal,
 } from './controllers/personal_expense.js';
 
 import signUserJWT from './utils/signJWT.js';
@@ -56,10 +57,6 @@ app.get('/', (req, res) => {
   } else {
     res.render('index');
   }
-});
-
-app.get('/wip', async (req, res) => {
-  res.render('line_notify');
 });
 
 app.get('/callback', async (req, res) => {
@@ -107,7 +104,7 @@ app.get('/sent', async (req, res) => {
     const creditorName = creditorNameResult[0].name;
     const groupName = await getGroupName(groupId);
     const accessTokenLine = await getAccessTokenLine(debtorId);
-    await axios.post(
+    const response = await axios.post(
       'https://notify-api.line.me/api/notify',
       {
         message: `還款囉～ 在${groupName}要給${creditorName}新台幣${amount}元！ 
@@ -120,8 +117,14 @@ app.get('/sent', async (req, res) => {
         },
       }
     );
+    if (response.data.status === 200) {
+      res.cookie('messageSent', 'success');
+    }
     res.redirect(`/group/${groupId}`);
   } catch (error) {
+    const { groupId } = req.cookies;
+    res.cookie('messageSent', 'error');
+    res.redirect(`/group/${groupId}`);
     console.error(error);
   }
 });
@@ -132,6 +135,11 @@ app.get('/user/signin', async (req, res) => {
 
 app.get('/user/signup', async (req, res) => {
   res.render('sign_up');
+});
+
+app.get('/user/logout', async (req, res) => {
+  res.cookie('jwtUserToken', '', { maxAge: 1 });
+  res.redirect('/');
 });
 
 app.post(
@@ -220,8 +228,10 @@ app.get('/personal_page', async (req, res) => {
         res.redirect('/user/signin');
         return;
       }
+      const userNameResult = await getUserName(userId);
+      const userName = userNameResult[0].name;
       const groups = await getGroupData(userId);
-      res.render('personal_page_new', { groups });
+      res.render('personal_page_new', { userName, groups });
     } else {
       res.redirect('/user/signin');
     }
@@ -317,6 +327,7 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
       const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
       const personalpayments = await personalPaymentTotal(groupId, userId);
       const personalsettlements = await personalsettlementsTotal(groupId, userId);
+      const personalsrepayments = await personalRepaymentTotal(groupId, userId);
       res.render('group_page', {
         groupName,
         users: groupUsers,
@@ -325,6 +336,7 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
         personalExpenseTotal,
         personalpayments,
         personalsettlements,
+        personalsrepayments,
         invite: `/group/invitation/${groupToken}`,
       });
     } else {
