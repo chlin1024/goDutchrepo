@@ -27,6 +27,7 @@ html(lang='en')
     link(href='../assets/css/argon-dashboard-tailwind.css?v=1.0.1', rel='stylesheet')
     // jQuery
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js")
+    script(src='https://cdn.jsdelivr.net/npm/sweetalert2@11')
   body.m-0.font-sans.antialiased.font-normal.bg-white.text-start.text-base.leading-default.text-slate-500
     // Navbar
     nav.absolute.top-0.z-30.flex.flex-wrap.items-center.justify-between.w-full.px-4.py-2.mt-6.mb-4.shadow-none(class='lg:flex-nowrap lg:justify-start')
@@ -158,6 +159,11 @@ html(lang='en')
         $.post('/payment/create', paymentData,
           function(data) {
             if (data.statusCode === 200) {
+              Swal.fire(
+                '新稱款項',
+                '成功',
+                'success'
+              )
               window.location.replace(`/group/${data.groupId}`);
             }
           })

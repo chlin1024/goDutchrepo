@@ -15,6 +15,7 @@ html
     link(href="../assets/css/nucleo-svg.css" rel="stylesheet")
     <!-- Popper -->
     script(src="https://unpkg.com/@popperjs/core@2")
+    script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js")
     <!-- Main Styling -->
     link(href="../assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet")
   body(class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500")
@@ -189,7 +190,7 @@ html
           div(class="flex-none w-full max-w-full px-6")
             div(class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
               div(class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent")
-                h6(class="dark:text-white") Payments
+                h6(class="dark:text-white") 群組支出項目
               div(class="flex-auto px-0 pt-0 pb-2")
               div(class="p-0 overflow-x-auto")
                 table(class="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500")
@@ -223,7 +224,7 @@ html
           div(class="flex-none w-full max-w-full px-6")
             div(class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border")
               div(class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent")
-                h6(class="dark:text-white") Balance
+                h6(class="dark:text-white") 還款金流
               div(class="flex-auto px-0 pt-0 pb-2")
               div(class="p-0 overflow-x-auto")
                 table(class="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500")
@@ -263,10 +264,13 @@ html
       <!-- main script file  -->
     script(src="../assets/js/argon-dashboard-tailwind.js?v=1.0.1", async='')
     script.
-      $(document).ready(() => {
-        
-      });
-
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+      if (status === 'success') {
+        Swal.fire('Line通知已發送');
+      } else if (status === 'error') {
+        Swal.fire('需還款人尚未綁定Line通知');
+      }
       function copyInivationLink() {
         // Get the text field
         let copyText = document.getElementById("invite_link");

@@ -118,13 +118,11 @@ app.get('/sent', async (req, res) => {
       }
     );
     if (response.data.status === 200) {
-      res.cookie('messageSent', 'success');
+      res.redirect(`/group/${groupId}?status=success`);
     }
-    res.redirect(`/group/${groupId}`);
   } catch (error) {
     const { groupId } = req.cookies;
-    res.cookie('messageSent', 'error');
-    res.redirect(`/group/${groupId}`);
+    res.redirect(`/group/${groupId}?status=error`);
     console.error(error);
   }
 });
@@ -209,8 +207,7 @@ app.post(
       if (referer) {
         res.redirect(referer);
       }
-      res.redirect('/personal_page');
-      return res.status(200);
+      return res.redirect('/personal_page');
     } catch (error) {
       console.error(error);
       return res.status(500).render('sign_in', { error });
@@ -297,6 +294,7 @@ app.get('/group/invitation/:groupToken', param('groupToken').exists({ checkFalsy
     if (!isgroupMember) {
       await createGroupMember(groupId, userId);
     }
+    res.cookie('referer', '', { maxAge: 1 });
     res.redirect(`/group/${groupId}`);
   }
 });

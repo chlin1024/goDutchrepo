@@ -164,7 +164,8 @@ html(lang='en')
               alert('失敗');
               return;
             } else if (data.statusCode === 200) {
-              alert('成功');
+              //alert('成功');
+              Swal.fire('成功');
               //document.querySelector('#response_data').innerHTML = JSON.stringify(data.message, null, 4);
               window.location.replace(`/group/${data.groupId}`);
             }
