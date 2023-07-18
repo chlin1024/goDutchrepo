@@ -51,11 +51,15 @@ app.use(cookieParser());
 app.use(express.static('./build'));
 
 app.get('/', (req, res) => {
-  const userToken = req.cookies.jwtUserToken;
-  if (userToken) {
-    res.render('index', { userToken });
-  } else {
-    res.render('index');
+  try {
+    const userToken = req.cookies.jwtUserToken;
+    if (userToken) {
+      res.render('index', { userToken });
+    } else {
+      res.render('index');
+    }
+  } catch (error) {
+    res.status(500);
   }
 });
 
@@ -128,16 +132,28 @@ app.get('/sent', async (req, res) => {
 });
 
 app.get('/user/signin', async (req, res) => {
-  res.render('sign_in');
+  try {
+    res.render('sign_in');
+  } catch (error) {
+    res.render('404');
+  }
 });
 
 app.get('/user/signup', async (req, res) => {
-  res.render('sign_up');
+  try {
+    res.render('sign_up');
+  } catch (error) {
+    res.render('404');
+  }
 });
 
 app.get('/user/logout', async (req, res) => {
-  res.cookie('jwtUserToken', '', { maxAge: 1 });
-  res.redirect('/');
+  try {
+    res.cookie('jwtUserToken', '', { maxAge: 1 });
+    res.redirect('/');
+  } catch (error) {
+    res.status(500);
+  }
 });
 
 app.post(
@@ -268,34 +284,39 @@ app.post('/group/create', body('groupName').exists({ checkFalsy: true }), async 
 });
 
 app.get('/group/invitation/:groupToken', param('groupToken').exists({ checkFalsy: true }), async (req, res) => {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    console.log(result);
-    res.status(400).send({ statusCode: 400, result });
-    return;
-  }
-  const groupToken = req.params?.groupToken;
-  const userToken = req.cookies.jwtUserToken;
-  if (!userToken) {
-    res.cookie('referer', `/group/invitation/${groupToken}`);
-    res.redirect('/user/signin');
-    return;
-  }
-  const payload = verifyUserJWT(userToken);
-  const { userId } = payload;
-  if (!payload) {
-    res.redirect('/user/signin');
-    return;
-  }
-  const groupId = await getGroupIdByToken(groupToken);
-  if (groupId) {
-    const groupMemberArray = await groupMember(groupId);
-    const isgroupMember = groupMemberArray.includes(userId);
-    if (!isgroupMember) {
-      await createGroupMember(groupId, userId);
+  try {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log(result);
+      res.status(400).send({ statusCode: 400, result });
+      return;
     }
-    res.cookie('referer', '', { maxAge: 1 });
-    res.redirect(`/group/${groupId}`);
+    const groupToken = req.params?.groupToken;
+    const userToken = req.cookies.jwtUserToken;
+    if (!userToken) {
+      res.cookie('referer', `/group/invitation/${groupToken}`);
+      res.redirect('/user/signin');
+      return;
+    }
+    const payload = verifyUserJWT(userToken);
+    const { userId } = payload;
+    if (!payload) {
+      res.redirect('/user/signin');
+      return;
+    }
+    const groupId = await getGroupIdByToken(groupToken);
+    if (groupId) {
+      const groupMemberArray = await groupMember(groupId);
+      const isgroupMember = groupMemberArray.includes(userId);
+      if (!isgroupMember) {
+        await createGroupMember(groupId, userId);
+      }
+      res.cookie('referer', '', { maxAge: 1 });
+      res.redirect(`/group/${groupId}`);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500);
   }
 });
 
@@ -346,9 +367,13 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
 });
 
 app.get('/payment', async (req, res) => {
-  const { groupId } = req.cookies;
-  const groupUsers = await getGroupMember(groupId);
-  res.render('create_payment', { users: groupUsers });
+  try {
+    const { groupId } = req.cookies;
+    const groupUsers = await getGroupMember(groupId);
+    res.render('create_payment', { users: groupUsers });
+  } catch (error) {
+    res.status(500);
+  }
 });
 
 app.post(
@@ -430,11 +455,15 @@ app.post('/payment/delete', async (req, res) => {
 });
 
 app.get('/settlement/create', async (req, res) => {
-  const { debtor, creditor, amount } = req.query;
-  const transactionData = { debtor, creditor, amount };
-  const { groupId } = req.cookies;
-  const groupUsers = await getGroupMember(groupId);
-  res.render('create_settlement', { users: groupUsers, transactionData });
+  try {
+    const { debtor, creditor, amount } = req.query;
+    const transactionData = { debtor, creditor, amount };
+    const { groupId } = req.cookies;
+    const groupUsers = await getGroupMember(groupId);
+    res.render('create_settlement', { users: groupUsers, transactionData });
+  } catch (error) {
+    res.status(500);
+  }
 });
 
 app.post(
