@@ -50,11 +50,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('./build'));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const userToken = req.cookies.jwtUserToken;
     if (userToken) {
-      res.render('index', { userToken });
+      const payload = verifyUserJWT(userToken);
+      const { userId } = payload;
+      const userNameResult = await getUserName(userId);
+      const userName = userNameResult[0].name;
+      res.render('index', { userToken, userName });
     } else {
       res.render('index');
     }
@@ -347,9 +351,12 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
       const personalpayments = await personalPaymentTotal(groupId, userId);
       const personalsettlements = await personalsettlementsTotal(groupId, userId);
       const personalsrepayments = await personalRepaymentTotal(groupId, userId);
+      const userNameResult = await getUserName(userId);
+      const userName = userNameResult[0].name;
       res.render('group_page', {
         groupName,
         users: groupUsers,
+        userName,
         transactions: groupTransactions,
         payments: groupPayments,
         personalExpenseTotal,
