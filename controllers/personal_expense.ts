@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { getPaymentIds, getPersonalPayments } from '../models/payments.js';
 import { debts } from './debts.js';
-import { getPersonalsettlements } from '../models/settlements.js';
+import { getPersonalsettlements, getPersonalRepayments } from '../models/settlements.js';
 
 export async function calpersonalExpenseTotal(groupId: number, userId: number) {
   const payments = await getPaymentIds(groupId);
@@ -39,6 +39,15 @@ interface Settlement {
 export async function personalsettlementsTotal(groupId: number, userId: number) {
   const personalsettlements = await getPersonalsettlements(groupId, userId);
   const total = personalsettlements.reduce(
+    (accumulator: number, settlement: Settlement) => accumulator + settlement.amount,
+    0
+  );
+  return total;
+}
+
+export async function personalRepaymentTotal(groupId: number, userId: number) {
+  const personalRepayments = await getPersonalRepayments(groupId, userId);
+  const total = personalRepayments.reduce(
     (accumulator: number, settlement: Settlement) => accumulator + settlement.amount,
     0
   );

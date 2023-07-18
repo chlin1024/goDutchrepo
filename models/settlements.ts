@@ -28,3 +28,12 @@ export async function getPersonalsettlements(groupId: number, userId: number) {
   );
   return personalsettlements;
 }
+
+export async function getPersonalRepayments(groupId: number, userId: number) {
+  const [personalRepayments]: any = await promisePool.query(
+    `SELECT id, receiver_id, repay_at, amount FROM settlements 
+     WHERE group_id = ? AND payer_id = ?`,
+    [groupId, userId]
+  );
+  return personalRepayments;
+}
