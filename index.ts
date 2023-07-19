@@ -116,7 +116,7 @@ app.get('/sent', async (req, res) => {
       'https://notify-api.line.me/api/notify',
       {
         message: `還款囉～ 在${groupName}要給${creditorName}新台幣${amount}元！ 
-        點擊連結登記還款: https://www.cphoebelin.com/settlement/create?debtor=${debtor}&creditor=${creditor}&amount=${amount}`,
+        點擊連結登記還款: https://www.cphoebelin.com/settlement/create?group=${groupId}&debtor=${debtor}&creditor=${creditor}&amount=${amount}`,
       },
       {
         headers: {
@@ -354,6 +354,7 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
       const userNameResult = await getUserName(userId);
       const userName = userNameResult[0].name;
       res.render('group_page', {
+        groupId,
         groupName,
         users: groupUsers,
         userName,
@@ -463,9 +464,10 @@ app.post('/payment/delete', async (req, res) => {
 
 app.get('/settlement/create', async (req, res) => {
   try {
-    const { debtor, creditor, amount } = req.query;
-    const transactionData = { debtor, creditor, amount };
-    const { groupId } = req.cookies;
+    const { group, debtor, creditor, amount } = req.query;
+    const groupId = parseInt(group as string, 10);
+    const transactionData = { groupId, debtor, creditor, amount };
+    // const { groupId } = req.cookies;
     const groupUsers = await getGroupMember(groupId);
     res.render('create_settlement', { users: groupUsers, transactionData });
   } catch (error) {
@@ -487,8 +489,8 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
     }
     try {
-      const { payer, amount, receiver } = req.body;
-      const { groupId } = req.cookies;
+      const { groupId, payer, amount, receiver } = req.body;
+      //  const { groupId } = req.cookies;
       await createSettlement(amount, payer, groupId, receiver);
       return res.status(200).json({ statusCode: 200, groupId });
     } catch (error) {

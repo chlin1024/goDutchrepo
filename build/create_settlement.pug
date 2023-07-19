@@ -80,6 +80,7 @@ html(lang='en')
               .relative.z-0.flex.flex-col.min-w-0.break-words.bg-white.border-0.shadow-xl.rounded-2xl.bg-clip-border
                 .p-6.mb-0.text-center.bg-white.border-b-0.rounded-t-2xl
                   h5 新增還款
+                  input(id="groupIddiv" value=`${transactionData.groupId}` hidden)
                   input(id="debtorIddiv" value=`${transactionData.debtor}` hidden)
                   input(id="creditorIddiv" value=`${transactionData.creditor}` hidden)
                 .flex-auto.p-6
@@ -138,16 +139,22 @@ html(lang='en')
     script(src='../assets/js/argon-dashboard-tailwind.js?v=1.0.1', async='')
     script.
       $(document).ready(() => {
-        const debtorId = debtorIddiv.value;
-        const creditorId = creditorIddiv.value;
-        $(`div.payer select option[value='${debtorId}']`).attr("selected","selected");
-        $(`div.receiver select option[value='${creditorId}']`).attr("selected","selected");
+        const debtorId = $('#debtorIddiv').val();
+        const creditorId = $('#creditorIddiv').val();
+        $('div.payer select').val(debtorId);
+        $('div.receiver select').val(creditorId);
+        // const debtorId = debtorIddiv.value;
+        // const creditorId = creditorIddiv.value;
+        //$(`div.payer select option[value='${debtorId}']`).attr("selected","selected");
+        //$(`div.receiver select option[value='${creditorId}']`).attr("selected","selected");
       });
       function onClick(){
+        const groupId = document.getElementById('groupIddiv').value;
         const payer = document.getElementById('settlement_payer').value;
         const amount = document.getElementById('settlement_amount').value;
         const receiver = document.getElementById('settlement_receiver').value;
         const settlementData = {
+          groupId: groupId,
           payer: payer, 
           amount: amount,
           receiver: receiver
