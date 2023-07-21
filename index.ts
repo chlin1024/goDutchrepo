@@ -2,10 +2,13 @@ import express from 'express';
 import { body, param, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import bcrypt from 'bcryptjs';
+//  import bcrypt from 'bcryptjs';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
+
+import userRouter from './routes/user.js';
+//  import groupRouter from './routes/group.js';
 
 import { getGroupName, getGroupIdByToken, getGroupToken } from './models/payment_groups.js';
 import { getPaymentDetails, updatePaymentById } from './models/payments.js';
@@ -13,9 +16,9 @@ import { getDebtors } from './models/payment_debtors.js';
 import { createGroupMember, getGroupMember } from './models/group_members.js';
 import { createSettlement } from './models/settlements.js';
 import {
-  getuserEmail,
-  getUserPassword,
-  getuserId,
+  //  getuserEmail,
+  //  getUserPassword,
+  //  getuserId,
   saveAccessTokenLine,
   getAccessTokenLine,
   getUserName,
@@ -24,7 +27,7 @@ import {
 import { createGroupControl, getGroupData } from './controllers/groups.js';
 import sortTransaction from './controllers/split2.js';
 import groupMember from './controllers/group_members.js';
-import signUp from './controllers/signup.js';
+//  import { signUp } from './controllers/signup.js';
 import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js';
 import updateDebtor from './controllers/update_debtors.js';
 import {
@@ -34,7 +37,7 @@ import {
   personalRepaymentTotal,
 } from './controllers/personal_expense.js';
 
-import signUserJWT from './utils/signJWT.js';
+//  import signUserJWT from './utils/signJWT.js';
 import verifyUserJWT from './utils/verifyJWT.js';
 
 dotenv.config();
@@ -42,6 +45,7 @@ const app = express();
 const port = 3000;
 const fileName = fileURLToPath(import.meta.url);
 const dirName = path.dirname(fileName);
+//  const router = Router();
 
 app.set('views', path.join(dirName, '../build'));
 app.set('view engine', 'pug');
@@ -49,6 +53,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('./build'));
+
+/*  router.use(function (req, res, next) {
+  next();
+}); */
 
 app.get('/', async (req, res) => {
   try {
@@ -134,33 +142,33 @@ app.get('/sent', async (req, res) => {
     console.error(error);
   }
 });
-
-app.get('/user/signin', async (req, res) => {
+app.use('/', [userRouter]);
+/*  app.get('/user/signin', async (req, res) => {
   try {
     res.render('sign_in');
   } catch (error) {
     res.render('404');
   }
-});
+}); */
 
-app.get('/user/signup', async (req, res) => {
+/* app.get('/user/signup', async (req, res) => {
   try {
     res.render('sign_up');
   } catch (error) {
     res.render('404');
   }
-});
+}); */
 
-app.get('/user/logout', async (req, res) => {
+/*  app.get('/user/logout', async (req, res) => {
   try {
     res.cookie('jwtUserToken', '', { maxAge: 1 });
     res.redirect('/');
   } catch (error) {
     res.status(500);
   }
-});
+}); */
 
-app.post(
+/*  app.post(
   '/user/signup',
   body('name').exists({ checkFalsy: true }).withMessage('名字不能空白').trim(),
   body('signupEmail')
@@ -195,9 +203,9 @@ app.post(
       return res.status(500);
     }
   }
-);
+);  */
 
-app.post(
+/*  app.post(
   '/user/signin',
   body('email').exists({ checkFalsy: true }).withMessage('Email不能空白').isEmail().withMessage('請輸入正確Email'),
   body('password').exists({ checkFalsy: true }).withMessage('密碼不能空白'),
@@ -233,7 +241,7 @@ app.post(
       return res.status(500).render('sign_in', { error });
     }
   }
-);
+);  */
 
 app.get('/personal_page', async (req, res) => {
   try {
