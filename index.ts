@@ -1,5 +1,4 @@
 import express from 'express';
-//  import { body, param, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
@@ -10,23 +9,13 @@ import userRouter from './routes/user.js';
 import settlementRouter from './routes/settlement.js';
 import paymentRouter from './routes/payment.js';
 import groupRouter from './routes/group.js';
+import personalPageRouter from './routes/personalPage.js';
+import indexRouter from './routes/index.js';
 
 import { getGroupName } from './models/payment_groups.js';
-//   getGroupIdByToken, getGroupToken } from './models/payment_groups.js';
-//  import { createGroupMember, getGroupMember } from './models/group_members.js';
 import { saveAccessTokenLine, getAccessTokenLine, getUserName } from './models/users.js';
 
-import { getGroupData } from './controllers/groups.js';
-//  , createGroupControl } from './controllers/groups.js';
-//  import sortTransaction from './controllers/split2.js';
-//  import groupMember from './controllers/group_members.js';
-//  import { printPayments } from './controllers/payments.js';
-/*  import {
-  calpersonalExpenseTotal,
-  personalPaymentTotal,
-  personalsettlementsTotal,
-  personalRepaymentTotal,
-} from './controllers/personal_expense.js'; */
+//  import { getGroupData } from './controllers/groups.js';
 
 import verifyUserJWT from './utils/verifyJWT.js';
 
@@ -48,7 +37,7 @@ app.use(express.static('./build'));
   next();
 }); */
 
-app.get('/', async (req, res) => {
+/*  app.get('/', async (req, res) => {
   try {
     const userToken = req.cookies.jwtUserToken;
     if (userToken) {
@@ -63,7 +52,7 @@ app.get('/', async (req, res) => {
   } catch (error) {
     res.status(500);
   }
-});
+}); */
 
 app.get('/callback', async (req, res) => {
   try {
@@ -133,9 +122,9 @@ app.get('/sent', async (req, res) => {
   }
 });
 
-app.use('/', [userRouter, settlementRouter, paymentRouter, groupRouter]);
+app.use('/', [userRouter, settlementRouter, paymentRouter, groupRouter, personalPageRouter, indexRouter]);
 
-app.get('/personal_page', async (req, res) => {
+/*  app.get('/personal_page', async (req, res) => {
   try {
     const userToken = req.cookies.jwtUserToken;
     if (userToken) {
@@ -151,123 +140,6 @@ app.get('/personal_page', async (req, res) => {
       res.render('personal_page_new', { userName, groups });
     } else {
       res.redirect('/user/signin');
-    }
-  } catch (error) {
-    res.status(500);
-  }
-});
-
-/*  app.get('/group/create', async (req, res) => {
-  res.render('create_group_new');
-});
-
-app.post('/group/create', body('groupName').exists({ checkFalsy: true }), async (req, res) => {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    res.status(400).json({ result });
-    return;
-  }
-  try {
-    const { groupName } = req.body;
-    const userToken = req.cookies.jwtUserToken;
-    if (!userToken) {
-      res.redirect('/user/signin');
-    }
-    const payload = verifyUserJWT(userToken);
-    const { userId } = payload;
-    if (!payload) {
-      res.redirect('/user/signin');
-      return;
-    }
-    const groupId = await createGroupControl(groupName, userId);
-    res.status(200).json({ statusCode: 200, groupId });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ statusCode: 500, message: error });
-  }
-});
-
-app.get('/group/invitation/:groupToken', param('groupToken').exists({ checkFalsy: true }), async (req, res) => {
-  try {
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-      console.log(result);
-      res.status(400).send({ statusCode: 400, result });
-      return;
-    }
-    const groupToken = req.params?.groupToken;
-    const userToken = req.cookies.jwtUserToken;
-    if (!userToken) {
-      res.cookie('referer', `/group/invitation/${groupToken}`);
-      res.redirect('/user/signin');
-      return;
-    }
-    const payload = verifyUserJWT(userToken);
-    const { userId } = payload;
-    if (!payload) {
-      res.redirect('/user/signin');
-      return;
-    }
-    const groupId = await getGroupIdByToken(groupToken);
-    if (groupId) {
-      const groupMemberArray = await groupMember(groupId);
-      const isgroupMember = groupMemberArray.includes(userId);
-      if (!isgroupMember) {
-        await createGroupMember(groupId, userId);
-      }
-      res.cookie('referer', '', { maxAge: 1 });
-      res.redirect(`/group/${groupId}`);
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500);
-  }
-});
-
-app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) => {
-  try {
-    const groupId: number = parseInt(req.params?.groupId, 10);
-    const userJWT = req.cookies.jwtUserToken;
-    const groupToken = await getGroupToken(groupId);
-    const payload = verifyUserJWT(userJWT);
-    const { userId } = payload;
-    if (!payload) {
-      res.redirect('/user/signin');
-      return;
-    }
-    if (!groupId) {
-      res.status(400).send('Please provide group Id');
-      return;
-    }
-    res.cookie('groupId', groupId);
-    const groupName = await getGroupName(groupId);
-    const groupUsers = await getGroupMember(groupId);
-    const groupMemberArray = await groupMember(groupId);
-    const isgroupMember = groupMemberArray.includes(userId);
-    if (isgroupMember) {
-      const groupPayments = await printPayments(groupId);
-      const groupTransactions = await sortTransaction(groupId);
-      const personalExpenseTotal = await calpersonalExpenseTotal(groupId, userId);
-      const personalpayments = await personalPaymentTotal(groupId, userId);
-      const personalsettlements = await personalsettlementsTotal(groupId, userId);
-      const personalsrepayments = await personalRepaymentTotal(groupId, userId);
-      const userNameResult = await getUserName(userId);
-      const userName = userNameResult[0].name;
-      res.render('group_page', {
-        groupId,
-        groupName,
-        users: groupUsers,
-        userName,
-        transactions: groupTransactions,
-        payments: groupPayments,
-        personalExpenseTotal,
-        personalpayments,
-        personalsettlements,
-        personalsrepayments,
-        invite: `/group/invitation/${groupToken}`,
-      });
-    } else {
-      res.send('you are not group member');
     }
   } catch (error) {
     res.status(500);
