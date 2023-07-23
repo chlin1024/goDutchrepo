@@ -1,42 +1,11 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
-//  import axios from 'axios';
+import { Request, Response } from 'express';
+import axios from 'axios';
 
-import userRouter from './routes/user.js';
-import settlementRouter from './routes/settlement.js';
-import paymentRouter from './routes/payment.js';
-import groupRouter from './routes/group.js';
-import personalPageRouter from './routes/personalPage.js';
-import indexRouter from './routes/index.js';
-import lineNotifyRouter from './routes/lineNotify.js';
+import { saveAccessTokenLine, getUserName, getAccessTokenLine } from '../models/users.js';
+import { getGroupName } from '../models/payment_groups.js';
+import verifyUserJWT from '../utils/verifyJWT.js';
 
-//  import { getGroupName } from './models/payment_groups.js';
-//  import { saveAccessTokenLine, getAccessTokenLine, getUserName } from './models/users.js';
-
-//  import verifyUserJWT from './utils/verifyJWT.js';
-
-dotenv.config();
-const app = express();
-const port = 3000;
-const fileName = fileURLToPath(import.meta.url);
-const dirName = path.dirname(fileName);
-//  const router = Router();
-
-app.set('views', path.join(dirName, '../build'));
-app.set('view engine', 'pug');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.static('./build'));
-
-/*  router.use(function (req, res, next) {
-  next();
-}); */
-
-/*  app.get('/callback', async (req, res) => {
+export async function lineNotifyCallback(req: Request, res: Response) {
   try {
     const userToken = req.cookies.jwtUserToken;
     if (userToken) {
@@ -69,9 +38,9 @@ app.use(express.static('./build'));
   } catch (error) {
     console.error(error);
   }
-});
+}
 
-app.get('/sent', async (req, res) => {
+export async function sentLineNotify(req: Request, res: Response) {
   try {
     const { groupId } = req.cookies;
     const { debtor, creditor, amount } = req.query;
@@ -102,22 +71,4 @@ app.get('/sent', async (req, res) => {
     res.redirect(`/group/${groupId}?status=error`);
     console.error(error);
   }
-}); */
-
-app.use('/', [
-  userRouter,
-  settlementRouter,
-  paymentRouter,
-  groupRouter,
-  personalPageRouter,
-  indexRouter,
-  lineNotifyRouter,
-]);
-
-app.all('*', (req, res) => {
-  res.status(404).render('404');
-});
-
-app.listen(port, () => {
-  console.log(`Server is listening on ${port}`);
-});
+}
