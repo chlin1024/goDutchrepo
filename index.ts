@@ -2,34 +2,27 @@ import express from 'express';
 import { body, param, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
-//  import bcrypt from 'bcryptjs';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
 
 import userRouter from './routes/user.js';
-//  import groupRouter from './routes/group.js';
+import settlementRouter from './routes/settlement.js';
+import paymentRouter from './routes/payment.js';
 
 import { getGroupName, getGroupIdByToken, getGroupToken } from './models/payment_groups.js';
-import { getPaymentDetails, updatePaymentById } from './models/payments.js';
-import { getDebtors } from './models/payment_debtors.js';
+//  import { getPaymentDetails, updatePaymentById } from './models/payments.js';
+//  import { getDebtors } from './models/payment_debtors.js';
 import { createGroupMember, getGroupMember } from './models/group_members.js';
-import { createSettlement } from './models/settlements.js';
-import {
-  //  getuserEmail,
-  //  getUserPassword,
-  //  getuserId,
-  saveAccessTokenLine,
-  getAccessTokenLine,
-  getUserName,
-} from './models/users.js';
+//  import { createSettlement } from './models/settlements.js';
+import { saveAccessTokenLine, getAccessTokenLine, getUserName } from './models/users.js';
 
 import { createGroupControl, getGroupData } from './controllers/groups.js';
 import sortTransaction from './controllers/split2.js';
 import groupMember from './controllers/group_members.js';
-//  import { signUp } from './controllers/signup.js';
-import { printPayments, deletePayment, createPaymentcontrol } from './controllers/payments.js';
-import updateDebtor from './controllers/update_debtors.js';
+import { printPayments } from './controllers/payments.js';
+//  deletePayment, createPaymentcontrol } from './controllers/payments.js';
+//  import updateDebtor from './controllers/update_debtors.js';
 import {
   calpersonalExpenseTotal,
   personalPaymentTotal,
@@ -37,7 +30,6 @@ import {
   personalRepaymentTotal,
 } from './controllers/personal_expense.js';
 
-//  import signUserJWT from './utils/signJWT.js';
 import verifyUserJWT from './utils/verifyJWT.js';
 
 dotenv.config();
@@ -142,106 +134,8 @@ app.get('/sent', async (req, res) => {
     console.error(error);
   }
 });
-app.use('/', [userRouter]);
-/*  app.get('/user/signin', async (req, res) => {
-  try {
-    res.render('sign_in');
-  } catch (error) {
-    res.render('404');
-  }
-}); */
 
-/* app.get('/user/signup', async (req, res) => {
-  try {
-    res.render('sign_up');
-  } catch (error) {
-    res.render('404');
-  }
-}); */
-
-/*  app.get('/user/logout', async (req, res) => {
-  try {
-    res.cookie('jwtUserToken', '', { maxAge: 1 });
-    res.redirect('/');
-  } catch (error) {
-    res.status(500);
-  }
-}); */
-
-/*  app.post(
-  '/user/signup',
-  body('name').exists({ checkFalsy: true }).withMessage('名字不能空白').trim(),
-  body('signupEmail')
-    .exists({ checkFalsy: true })
-    .withMessage('Email不能空白')
-    .isEmail()
-    .withMessage('請輸入正確Email'),
-  body('signupPassword').exists({ checkFalsy: true }).withMessage('密碼不能空白'),
-  async (req, res) => {
-    const result = validationResult(req);
-    if (!result.isEmpty()) {
-      return res.status(400).render('sign_up', { errors: result.array() });
-    }
-    try {
-      const { name, signupEmail, signupPassword } = req.body;
-      const { referer } = req.cookies;
-      const existUser = await getuserEmail(signupEmail);
-      if (existUser.length === 1) {
-        res.status(400).render('sign_up', { signUpError: '您已經是會員，請登入！' });
-      } else if (existUser.length === 0) {
-        const userData: any = await signUp(name, signupEmail, signupPassword);
-        const { token } = userData;
-        res.cookie('jwtUserToken', token);
-        if (referer) {
-          res.redirect(referer);
-        }
-        res.redirect('/personal_page');
-      }
-      return res.status(200);
-    } catch (error) {
-      console.error(error);
-      return res.status(500);
-    }
-  }
-);  */
-
-/*  app.post(
-  '/user/signin',
-  body('email').exists({ checkFalsy: true }).withMessage('Email不能空白').isEmail().withMessage('請輸入正確Email'),
-  body('password').exists({ checkFalsy: true }).withMessage('密碼不能空白'),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).render('sign_in', { errors: errors.array() });
-    }
-    let userId;
-    try {
-      const { email, password } = req.body;
-      const { referer } = req.cookies;
-      const existUser = await getuserEmail(email);
-      if (existUser.length === 1) {
-        const storedPassword = await getUserPassword(email);
-        const result = await bcrypt.compare(password, storedPassword[0].password);
-        if (result) {
-          userId = await getuserId(email);
-        } else if (!result) {
-          return res.status(400).render('sign_in', { SignInError: '密碼錯誤' });
-        }
-      } else if (existUser.length === 0) {
-        return res.status(400).render('sign_in', { SignInError: '這個Email尚未註冊會員，請註冊會員！' });
-      }
-      const token = signUserJWT(userId);
-      res.cookie('jwtUserToken', token);
-      if (referer) {
-        res.redirect(referer);
-      }
-      return res.redirect('/personal_page');
-    } catch (error) {
-      console.error(error);
-      return res.status(500).render('sign_in', { error });
-    }
-  }
-);  */
+app.use('/', [userRouter, settlementRouter, paymentRouter]);
 
 app.get('/personal_page', async (req, res) => {
   try {
@@ -382,7 +276,7 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
   }
 });
 
-app.get('/payment', async (req, res) => {
+/*  app.get('/payment', async (req, res) => {
   try {
     const { groupId } = req.cookies;
     const groupUsers = await getGroupMember(groupId);
@@ -468,9 +362,9 @@ app.post('/payment/delete', async (req, res) => {
     console.error(error);
     res.status(500).json({ statusCode: 500 });
   }
-});
+}); */
 
-app.get('/settlement/create', async (req, res) => {
+/*  app.get('/settlement/create', async (req, res) => {
   try {
     const { group, debtor, creditor, amount } = req.query;
     const groupId = parseInt(group as string, 10);
@@ -506,7 +400,7 @@ app.post(
       return res.status(500);
     }
   }
-);
+);  */
 
 app.all('*', (req, res) => {
   res.status(404).render('404');
