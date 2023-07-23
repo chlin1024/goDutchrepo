@@ -1,5 +1,5 @@
 import express from 'express';
-import { body, param, validationResult } from 'express-validator';
+//  import { body, param, validationResult } from 'express-validator';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
@@ -9,26 +9,24 @@ import axios from 'axios';
 import userRouter from './routes/user.js';
 import settlementRouter from './routes/settlement.js';
 import paymentRouter from './routes/payment.js';
+import groupRouter from './routes/group.js';
 
-import { getGroupName, getGroupIdByToken, getGroupToken } from './models/payment_groups.js';
-//  import { getPaymentDetails, updatePaymentById } from './models/payments.js';
-//  import { getDebtors } from './models/payment_debtors.js';
-import { createGroupMember, getGroupMember } from './models/group_members.js';
-//  import { createSettlement } from './models/settlements.js';
+import { getGroupName } from './models/payment_groups.js';
+//   getGroupIdByToken, getGroupToken } from './models/payment_groups.js';
+//  import { createGroupMember, getGroupMember } from './models/group_members.js';
 import { saveAccessTokenLine, getAccessTokenLine, getUserName } from './models/users.js';
 
-import { createGroupControl, getGroupData } from './controllers/groups.js';
-import sortTransaction from './controllers/split2.js';
-import groupMember from './controllers/group_members.js';
-import { printPayments } from './controllers/payments.js';
-//  deletePayment, createPaymentcontrol } from './controllers/payments.js';
-//  import updateDebtor from './controllers/update_debtors.js';
-import {
+import { getGroupData } from './controllers/groups.js';
+//  , createGroupControl } from './controllers/groups.js';
+//  import sortTransaction from './controllers/split2.js';
+//  import groupMember from './controllers/group_members.js';
+//  import { printPayments } from './controllers/payments.js';
+/*  import {
   calpersonalExpenseTotal,
   personalPaymentTotal,
   personalsettlementsTotal,
   personalRepaymentTotal,
-} from './controllers/personal_expense.js';
+} from './controllers/personal_expense.js'; */
 
 import verifyUserJWT from './utils/verifyJWT.js';
 
@@ -135,7 +133,7 @@ app.get('/sent', async (req, res) => {
   }
 });
 
-app.use('/', [userRouter, settlementRouter, paymentRouter]);
+app.use('/', [userRouter, settlementRouter, paymentRouter, groupRouter]);
 
 app.get('/personal_page', async (req, res) => {
   try {
@@ -159,7 +157,7 @@ app.get('/personal_page', async (req, res) => {
   }
 });
 
-app.get('/group/create', async (req, res) => {
+/*  app.get('/group/create', async (req, res) => {
   res.render('create_group_new');
 });
 
@@ -274,133 +272,7 @@ app.get('/group/:groupId', param('groupId').isInt().exists(), async (req, res) =
   } catch (error) {
     res.status(500);
   }
-});
-
-/*  app.get('/payment', async (req, res) => {
-  try {
-    const { groupId } = req.cookies;
-    const groupUsers = await getGroupMember(groupId);
-    res.render('create_payment', { users: groupUsers });
-  } catch (error) {
-    res.status(500);
-  }
-});
-
-app.post(
-  '/payment/create',
-  body('item').exists({ checkFalsy: true }).withMessage('品項不能空白'),
-  body('amount').exists({ checkFalsy: true }).withMessage('金額不能空白'),
-  body('amount').isInt({ min: 1, max: 10000000 }).withMessage('請輸入數字，且在1-10,000,000'),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-      return;
-    }
-    try {
-      const { item, creditor, amount, debtors } = req.body;
-      const numberOfDebtors = debtors.length;
-      const { groupId } = req.cookies;
-      await createPaymentcontrol(item, amount, creditor, groupId, numberOfDebtors, debtors);
-      res.status(200).json({ statusCode: 200, groupId });
-    } catch (error) {
-      res.status(500).json({ statusCode: 500 });
-    }
-  }
-);
-
-app.get('/payment/:paymentId', async (req, res) => {
-  try {
-    const paymentId: number = parseInt(req.params?.paymentId, 10);
-    const { groupId } = req.cookies;
-    const paymentData = await getPaymentDetails(paymentId);
-    if (paymentData.length === 1) {
-      const debtors = await getDebtors(paymentId);
-      const groupUsers = await getGroupMember(groupId);
-      res.cookie('paymentId', paymentId);
-      res.render('edit_payment', { users: groupUsers, payment: paymentData, debtors });
-    } else {
-      res.redirect(`/group/${groupId}`);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-app.post(
-  '/payment/update',
-  body('item').exists({ checkFalsy: true }).withMessage('品項不能空白'),
-  body('amount').exists({ checkFalsy: true }).withMessage('金額不能空白'),
-  body('amount').isInt({ min: 1, max: 10000000 }).withMessage('請輸入數字，且金額需在1-10,000,000之間'),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try {
-      const { item, creditor, amount, debtors } = req.body;
-      const paymentId = parseInt(req.cookies.paymentId, 10);
-      const numberOfDebtors = debtors.length;
-      const { groupId } = req.cookies;
-      const creditorId = creditor;
-      await updatePaymentById(item, amount, creditorId, numberOfDebtors, paymentId);
-      await updateDebtor(debtors, paymentId);
-      return res.status(200).json({ statusCode: 200, groupId });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ statusCode: 500 });
-    }
-  }
-);
-
-app.post('/payment/delete', async (req, res) => {
-  try {
-    const { paymentId, groupId } = req.cookies;
-    await deletePayment(paymentId);
-    res.status(200).json({ statusCode: 200, groupId });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ statusCode: 500 });
-  }
 }); */
-
-/*  app.get('/settlement/create', async (req, res) => {
-  try {
-    const { group, debtor, creditor, amount } = req.query;
-    const groupId = parseInt(group as string, 10);
-    const transactionData = { groupId, debtor, creditor, amount };
-    // const { groupId } = req.cookies;
-    const groupUsers = await getGroupMember(groupId);
-    res.render('create_settlement', { users: groupUsers, transactionData });
-  } catch (error) {
-    res.status(500);
-  }
-});
-
-app.post(
-  '/settlement/create',
-  body('amount')
-    .exists({ checkFalsy: true })
-    .withMessage('金額不能空白')
-    .isInt({ min: 1, max: 10000000 })
-    .withMessage('請輸入數字，且金額需在1-10,000,000之間'),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log(errors);
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try {
-      const { groupId, payer, amount, receiver } = req.body;
-      //  const { groupId } = req.cookies;
-      await createSettlement(amount, payer, groupId, receiver);
-      return res.status(200).json({ statusCode: 200, groupId });
-    } catch (error) {
-      console.error(error);
-      return res.status(500);
-    }
-  }
-);  */
 
 app.all('*', (req, res) => {
   res.status(404).render('404');
