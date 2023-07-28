@@ -75,14 +75,14 @@ html(lang='en')
                   .flex-auto.p-6
                     form(role='form' class="sign_in_form" action="/user/signin", method="post")
                       .mb-4
-                        input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.p-3.font-normal.text-gray-700.outline-none.transition-all(type='email', title="請輸入正確的Email", id="email", name="email" placeholder='Email', class='focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none')
+                        input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.p-3.font-normal.text-gray-700.outline-none.transition-all(type='email', title="請輸入正確的Email", id="email", name="email" placeholder='Email', class='focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none' value='exmaple01@gmail.com')
                         div
                         if errors
                           each error in errors
                             if error.path === 'email'
                               p.text-red-600=`!${error.msg}`
                       .mb-4
-                        input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.p-3.font-normal.text-gray-700.outline-none.transition-all(type='password', pattern="[a-zA-Z0-9]{8,}", title="密碼至少8個字元，包含英文字母與數字", id="password", name="password" placeholder='Password', class='focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none')
+                        input.text-sm.ease.block.w-full.appearance-none.rounded-lg.border.border-solid.border-gray-300.bg-white.bg-clip-padding.p-3.font-normal.text-gray-700.outline-none.transition-all(type='password', pattern="[a-zA-Z0-9]{8,}", title="密碼至少8個字元，包含英文字母與數字", id="password", name="password" placeholder='Password', class='focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none' value='1234rewq')
                         div
                         if errors
                           each error in errors
