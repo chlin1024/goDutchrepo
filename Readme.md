@@ -1,6 +1,5 @@
 - # goDutch
 
-  ![logo](/build/assets/img/team-1.jpg)
   輕鬆分帳，輕鬆享受生活！
 
   體驗我們的分帳軟體，輕鬆追蹤、記錄和結算共同花費，讓您的帳目清晰有序，更方便與朋友、家人共同管理財務！
@@ -16,8 +15,6 @@
     ![settlements](/build/assets/img/settlements.png)
   - Settlement Notification
     ![line_notify_gif](/build/assets/img/Line_notify.gif)
-- ## Table schema
-  ![table_schema](/build/assets/img/table_schema.png)
 - ## Algorithm
 
   - In a group bill spliting situation, there are two characteristic:
@@ -33,16 +30,19 @@
 
   - This algorithm can efficiently minimize the number of transactions needed to settle all debts because it focuses on maximizing the amount transferred in each transaction,
 
+- ## Table schema
+  ![table_schema](/build/assets/img/table_schema.png)
 - ## Getting Started
 
   - Demo account
     Sign in page : http://www.cphoebelin.com/user/signin
 
   ```
-  Account email : exmaple01@gmail.com
+  Account email : example01@gmail.com
   Password : 1234rewq
   ```
 
-  Link with Line Notify
+  - Link with Line Notify
+    ![line_notify_tutorial_gif](/build/assets/img/line_notify_tutorial.gif)
 
 - ## Installation
