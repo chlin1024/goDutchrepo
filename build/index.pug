@@ -37,35 +37,18 @@ html(lang='en')
             span.rounded-xs.duration-350.relative.my-0.mx-auto.block.h-px.bg-white.transition-all(bar3='', class='w-5.5 mt-1.75')
         .items-center.flex-grow.transition-all.ease.duration-350.basis-full.rounded-2xl(navbar-menu='', class='lg-max:bg-white lg-max:max-h-0 lg-max:overflow-hidden lg:flex lg:basis-auto')
           ul.flex.flex-col.pl-0.mx-auto.mb-0.list-none(class='lg-max:py-2 lg:flex-row xl:ml-auto')
-            //li
-              a.flex.items-center.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', aria-current='page', href='/personal_page')
-                i.mr-1.text-white.fa.fa-chart-pie.opacity-60(class='lg-max:text-slate-700')
-                |              Personal Page
             li
               a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/personal_page')
-                i.mr-1.text-white.fa.fa-user
+                i.mr-1.text-white.fa.fa-user.opacity-60(class='lg-max:text-slate-700')
                 span.mr-1.text-white.font-bold.opacity-60(class='lg-max:text-slate-700') 個人頁面
             li
               a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/user/signup')
-                i.mr-1.text-white.fas.fa-user-circle
+                i.mr-1.text-white.fas.fa-user-circle.opacity-60(class='lg-max:text-slate-700')
                 span.mr-1.text-white.font-bold.opacity-60(class='lg-max:text-slate-700') 會員註冊
             li
               a.block.px-4.py-2.mr-2.font-normal.text-white.transition-all.ease-in-out.duration-250.text-sm(class='lg-max:opacity-0 lg-max:text-slate-700 lg:px-2 lg:hover:text-white/75', href='/user/signin')
-                i.mr-1.text-white.fas.fa-key
+                i.mr-1.text-white.fas.fa-key.opacity-60(class='lg-max:text-slate-700')
                 span.mr-1.text-white.font-bold.opacity-60(class='lg-max:text-slate-700') 會員登入
-          // online builder btn
-          //
-            <li class="flex items-center">
-            <a
-            class="leading-pro ease-in border-white/75 text-xs tracking-tight-rem rounded-3.5xl hover:border-white/75 hover:-translate-y-px active:hover:border-white/75 active:hover:-translate-y-px active:opacity-85 active:shadow-xs active:border-white/75 bg-white/10 hover:bg-white/10 active:hover:bg-white/10 mr-2 mb-0 inline-block cursor-pointer border border-solid py-2 px-8 text-center align-middle font-bold uppercase text-white shadow-none transition-all hover:text-white hover:opacity-75 hover:shadow-none active:scale-100 active:bg-white active:text-black active:hover:text-white active:hover:opacity-75 active:hover:shadow-none"
-            target="_blank"
-            href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053"
-            >Online Builder</a
-            >
-            </li>
-          //ul.hidden.pl-0.mb-0.list-none(class='lg:block lg:flex-row')
-            li
-              a.inline-block.px-8.py-2.mb-0.mr-1.font-bold.leading-normal.text-center.align-middle.transition-all.ease-in.bg-transparent.border-0.rounded-lg.shadow-md.cursor-pointer.text-xs.tracking-tight-rem.bg-gradient-to-tl.from-gray-400.to-gray-100.text-slate-800(href='https://www.creative-tim.com/product/argon-dashboard-tailwind', target='_blank', class='hover:-translate-y-px hover:shadow-xs active:opacity-85') Use
     main.mt-0.transition-all.duration-200.ease-in-out
       section.min-h-screen
         .bg-top.relative.flex.items-start.pt-12.pb-56.m-4.overflow-hidden.bg-cover.min-h-50-screen.rounded-xl(class="bg-banner")
@@ -101,7 +84,7 @@ html(lang='en')
                         input.ease.-ml-7.duration-250.relative.float-left.mt-1.cursor-pointer.appearance-none.border.border-solid.border-slate-200.bg-white.bg-contain.bg-center.bg-no-repeat.align-top.transition-all(class="w-4.8 h-4.8 rounded-1.4 checked:bg-gradient-to-tl checked:from-blue-500 checked:to-violet-500 after:text-xxs after:font-awesome after:duration-250 after:ease-in-out after:absolute after:flex after:h-full after:w-full after:items-center after:justify-center after:text-white after:opacity-0 after:transition-all after:content-['\f00c'] checked:border-0 checked:border-transparent checked:bg-transparent checked:after:opacity-100", type='checkbox', value='', checked='')
                         label.mb-2.ml-1.font-normal.cursor-pointer.text-sm.text-slate-700(for='flexCheckDefault')
                           | 我同意 
-                          a.font-bold.text-slate-700(href='javascript:;') 服務條件
+                          a.font-bold.text-slate-700(href='') 服務條件
                       .text-center
                         button.inline-block.w-full.px-5.mt-6.mb-2.font-bold.text-center.text-white.align-middle.transition-all.bg-transparent.border-0.rounded-lg.cursor-pointer.leading-normal.text-sm.ease-in.tracking-tight-rem.shadow-md.bg-150.bg-x-25.bg-gradient-to-tl.from-zinc-800.to-zinc-700(type="submit" class='py-2.5 active:opacity-85 hover:-translate-y-px hover:shadow-xs hover:border-slate-700 hover:bg-slate-700 hover:text-white') 註冊
                       p.mt-4.mb-0.leading-normal.text-sm

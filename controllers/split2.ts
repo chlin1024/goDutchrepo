@@ -17,7 +17,7 @@ function creditorGroup(balances: { [s: string]: number }) {
     .sort(([, balance1], [, balance2]) => balance1 - balance2);
 }
 
-async function transactions(debtors: [string, number][], creditors: [string, number][]) {
+function transactions(debtors: [string, number][], creditors: [string, number][]) {
   try {
     const answer = [];
     while (debtors.length > 0 && creditors.length > 0) {
@@ -58,7 +58,7 @@ interface Transaction {
   amount: number;
 }
 
-export async function addNameToTransactions(groupTransactions: Transaction[]) {
+async function addNameToTransactions(groupTransactions: Transaction[]) {
   const formattedTransactions = await Promise.all(
     groupTransactions.map(async (transaction: Transaction) => {
       const { debtorId, creditorId, amount } = transaction;
@@ -89,7 +89,6 @@ export default async function sortTransaction(groupId: number) {
   const settledBalances = await computeSettlement(balancesRecord, groupId);
   const creditors: [string, number][] = creditorGroup(settledBalances);
   const debtors: [string, number][] = debtorGroup(balancesRecord);
-  console.log(debtors, creditors);
   const groupTransactions = await transactions(debtors, creditors);
   const finalTransactions = await addNameToTransactions(groupTransactions as Transaction[]);
   return finalTransactions;
