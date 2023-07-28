@@ -14,7 +14,7 @@
   - Debt simplication
     ![settlements](/build/assets/img/settlements.png)
   - Settlement Notification
-    ![line_notify_gif](/build/assets/img/Line%20Notify.gif)
+    ![line_notify_gif](/build/assets/img/Line_notify.gif)
 - ## Table schema
   ![table_schema](/build/assets/img/table_schema.png)
 - ## Algorithm
