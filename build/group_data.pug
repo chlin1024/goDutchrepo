@@ -1,0 +1,56 @@
+html 
+  head
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js")
+    //link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous")
+    link(href="/dist/output.css" rel="stylesheet")
+    title goDutch-Group Page
+  body
+    .container
+      div
+        input(type="button" class="btn btn-danger" onclick="location.href='/personal_page';" value="< Personal Page")
+      div
+        h2 Group Page
+        div(class="group_members")
+          h3 Group Members
+          div
+            each user in users
+              ul(class="list-group")
+               li(class="list-group-item")= user.name
+        br
+      div
+        input(type="button" onclick="location.href='/payment';" value="Create Payment")
+      div
+        div(class="balance_rsesult")
+          h3 Balance
+          div#balance
+            each transaction in transcations
+              ul(class="list-group")
+               li(class="list-group-item")= `${transaction.debtor} 還 ${transaction.creditor} 新台幣${transaction.amount}元`
+      div
+        div(class="balance_rsesult")
+          h3 Payments
+          div#payment
+            each payment in payments
+              ul(class="list-group")
+               li(class="list-group-item")= `${payment.creditorName} 墊${payment.item} 新台幣${payment.amount}元`
+      div
+        h3 邀請連結
+      div
+        div(class="invitation")
+          button(type="button" id="button-addon1" onclick="copyInivationLink()") Copy
+          input(type="text" class="form-control" value=`${invite}` id="invite_link")
+          //<input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">   
+    //script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous")
+    script.
+      function copyInivationLink() {
+        // Get the text field
+        let copyText = document.getElementById("invite_link");
+
+        // Select the text field
+        copyText.select(); 
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+
+        navigator.clipboard.writeText(copyText.value).then(() => {
+        alert("成功複製連結");
+        });
+      }
